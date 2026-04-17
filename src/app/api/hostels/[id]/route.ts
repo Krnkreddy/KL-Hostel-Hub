@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { sanitizeHostelPayload } from "@/lib/utils/validation";
+import { sanitizeHostelPayload, isValidUUID } from "@/lib/utils/validation";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  if (!isValidUUID(id)) return NextResponse.json({ error: "Invalid hostel ID" }, { status: 400 });
   const supabase = await createClient();
   const { data: hostel, error } = await supabase.from("hostels").select("*").eq("id", id).single();
   if (error || !hostel) return NextResponse.json({ data: null, error: "Not found" }, { status: 404 });
@@ -12,7 +13,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 }
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params; const supabase = await createClient();
+  const { id } = await params;
+  if (!isValidUUID(id)) return NextResponse.json({ error: "Invalid hostel ID" }, { status: 400 });
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
@@ -26,7 +29,9 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 }
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params; const supabase = await createClient();
+  const { id } = await params;
+  if (!isValidUUID(id)) return NextResponse.json({ error: "Invalid hostel ID" }, { status: 400 });
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();

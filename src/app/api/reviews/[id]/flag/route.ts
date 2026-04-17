@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { isValidUUID } from "@/lib/utils/validation";
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id: reviewId } = await params; const supabase = await createClient();
+  // ✅ R-02 FIX: Validate review ID format
+  if (!isValidUUID(reviewId)) return NextResponse.json({ error: "Invalid review ID" }, { status: 400 });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   let body: Record<string, unknown>;

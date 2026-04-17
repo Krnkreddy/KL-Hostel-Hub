@@ -22,9 +22,9 @@ export default function ReviewCard({ review, currentUserId, onDelete }: { review
 
   const handleDelete = async () => {
     if (!confirm("Delete this review?")) return;
-    const supabase = createClient();
-    await supabase.from("reviews").delete().eq("id", review.id);
-    onDelete?.(review.id);
+    // ✅ R-01 FIX: Delete via API route so server-side storage cleanup (BUG-05) runs
+    const res = await fetch(`/api/reviews/${review.id}`, { method: "DELETE" });
+    if (res.ok) onDelete?.(review.id);
   };
 
   return (
