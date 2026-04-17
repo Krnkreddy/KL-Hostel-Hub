@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FindTheHostel - Sign In</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#4f5e81",
+                        "inverse-primary": "#b7c6ee",
+                        "surface-dim": "#d3daea",
+                        "on-primary-fixed": "#091b3a",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#374668",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f9f9ff",
+                        "tertiary-container": "#402600",
+                        "surface-container-highest": "#dce2f3",
+                        "on-background": "#151c27",
+                        "secondary": "#006a61",
+                        "on-surface-variant": "#44474e",
+                        "inverse-on-surface": "#ebf1ff",
+                        "tertiary-fixed": "#ffddb8",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-container-low": "#f0f3ff",
+                        "on-secondary-container": "#006f66",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "outline": "#75777f",
+                        "secondary-fixed": "#89f5e7",
+                        "outline-variant": "#c5c6cf",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#8393b8",
+                        "secondary-container": "#86f2e4",
+                        "tertiary": "#241300",
+                        "surface-container": "#e7eefe",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "surface-variant": "#dce2f3",
+                        "surface-bright": "#f9f9ff",
+                        "primary-container": "#1b2b4b",
+                        "on-surface": "#151c27",
+                        "on-tertiary-container": "#cd8300",
+                        "background": "#f9f9ff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-secondary-fixed": "#00201d",
+                        "on-secondary-fixed-variant": "#005049",
+                        "surface-container-high": "#e2e8f8",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#b7c6ee",
+                        "primary": "#041635",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2a313d",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb95f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom ambient shadow per design system */
+        .ambient-shadow {
+            box-shadow: 0 12px 32px rgba(21, 28, 39, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased min-h-screen flex flex-col justify-center items-center p-6 relative overflow-hidden">
+<!-- Decorative subtle background elements (No lines rule) -->
+<div class="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-surface-container-low to-transparent -z-10"></div>
+<div class="absolute -top-40 -right-40 w-96 h-96 bg-primary-fixed opacity-30 rounded-full blur-3xl -z-10"></div>
+<div class="absolute -bottom-40 -left-40 w-96 h-96 bg-secondary-fixed opacity-20 rounded-full blur-3xl -z-10"></div>
+<!-- Main Authentication Canvas -->
+<main class="w-full max-w-[440px] flex flex-col items-center">
+<!-- Premium Logo & Brand Anchor -->
+<div class="flex flex-col items-center mb-10 text-center">
+<div class="flex items-center gap-2 text-primary mb-2">
+<span class="material-symbols-outlined icon-fill text-3xl">apartment</span>
+<span class="font-headline font-extrabold text-2xl tracking-tight">FindTheHostel</span>
+</div>
+<p class="text-sm font-medium tracking-wide text-on-surface-variant normal-case">Honest hostel reviews by real KL students</p>
+</div>
+<!-- The Content Card (Tonal Layering & Ambient Shadow) -->
+<div class="bg-surface-container-lowest w-full rounded-xl p-8 sm:p-10 ambient-shadow flex flex-col relative z-10">
+<div class="text-center mb-8">
+<h1 class="font-headline font-bold text-[28px] leading-tight text-on-surface mb-3 tracking-tight">
+                    Welcome to FindTheHostel
+                </h1>
+<p class="text-base text-on-surface-variant leading-relaxed normal-case">
+                    Sign in with your KL University Microsoft account to securely access trusted student housing reviews and insights.
+                </p>
+</div>
+<!-- Primary Action CTA -->
+<div class="flex flex-col gap-4 w-full">
+<button class="w-full h-14 bg-[#0078D4] hover:bg-[#005a9e] text-white rounded-lg flex items-center justify-center gap-3 transition-colors duration-200 group active:scale-[0.98]">
+<svg class="w-6 h-6" viewbox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+<path d="M10 0H0v10h10V0z" fill="#f25022"></path>
+<path d="M21 0H11v10h10V0z" fill="#7fba00"></path>
+<path d="M10 11H0v10h10V11z" fill="#00a4ef"></path>
+<path d="M21 11H11v10h10V11z" fill="#ffb900"></path>
+</svg>
+<span class="font-semibold text-base">Sign in with Microsoft</span>
+</button>
+</div>
+<!-- Divider Alternative (White space & Tonal Shift per Design System) -->
+<div class="w-full flex justify-center py-8">
+<div class="w-12 h-1 bg-surface-container-highest rounded-full"></div>
+</div>
+<!-- System Constraint Notice -->
+<div class="bg-surface-container-low rounded-lg p-5 flex gap-4 items-start">
+<span class="material-symbols-outlined text-outline text-xl mt-0.5">lock</span>
+<p class="text-[13px] text-on-surface-variant leading-relaxed font-medium normal-case">
+                    Only <strong class="text-on-surface font-semibold">@kluniversity.in</strong> email addresses are allowed to maintain the integrity and privacy of the student community network.
+                </p>
+</div>
+</div>
+<!-- Minimal Footprint Elements -->
+<footer class="mt-10 flex flex-col sm:flex-row items-center gap-4 sm:gap-8 text-xs text-outline font-medium tracking-wide">
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<span class="hidden sm:inline-block w-1 h-1 rounded-full bg-outline-variant"></span>
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<span class="hidden sm:inline-block w-1 h-1 rounded-full bg-outline-variant"></span>
+<a class="hover:text-primary transition-colors" href="#">Report Issue</a>
+</footer>
+</main>
+</body></html>

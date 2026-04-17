@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import BottomNav from "@/components/layout/BottomNav";
 import { createClient } from "@/lib/supabase/server";
 import HostelCard from "@/components/hostels/HostelCard";
 import HostelsFilter from "@/components/hostels/HostelsFilter";
@@ -8,9 +9,14 @@ import { sanitizeSearchInput } from "@/lib/utils/validation";
 import type { Hostel } from "@/types";
 import styles from "./page.module.css";
 
-export const metadata = { title: "Browse Hostels", description: "Find and compare hostels near KL University." };
+export const metadata = {
+  title: "Browse Hostels",
+  description: "Find and compare hostels near KL University — reviewed by verified students.",
+};
 
-interface PageProps { searchParams: Promise<{ search?: string; gender?: string; sort?: string; minPrice?: string; maxPrice?: string }>; }
+interface PageProps {
+  searchParams: Promise<{ search?: string; gender?: string; sort?: string; minPrice?: string; maxPrice?: string }>;
+}
 
 async function HostelsList({ searchParams }: { searchParams: Awaited<PageProps["searchParams"]> }) {
   const supabase = await createClient();
@@ -20,27 +26,35 @@ async function HostelsList({ searchParams }: { searchParams: Awaited<PageProps["
     const safe = sanitizeSearchInput(searchParams.search);
     if (safe.length > 0) query = query.or(`name.ilike.%${safe}%,address.ilike.%${safe}%`);
   }
-  if (searchParams.gender && searchParams.gender !== "all" && ["male","female","co-ed"].includes(searchParams.gender))
+  if (searchParams.gender && searchParams.gender !== "all" && ["male", "female", "co-ed"].includes(searchParams.gender))
     query = query.eq("gender", searchParams.gender);
   if (searchParams.minPrice) { const m = parseInt(searchParams.minPrice); if (!isNaN(m) && m >= 0) query = query.gte("price_min", m); }
   if (searchParams.maxPrice) { const m = parseInt(searchParams.maxPrice); if (!isNaN(m) && m > 0) query = query.lte("price_max", m); }
 
   switch (searchParams.sort) {
-    case "price_low": query = query.order("price_min", { ascending: true }); break;
+    case "price_low":  query = query.order("price_min", { ascending: true }); break;
     case "price_high": query = query.order("price_min", { ascending: false }); break;
-    case "distance": query = query.order("distance_from_campus", { ascending: true }); break;
-    case "newest": query = query.order("created_at", { ascending: false }); break;
+    case "distance":   query = query.order("distance_from_campus", { ascending: true }); break;
     default: query = query.order("is_verified", { ascending: false }).order("created_at", { ascending: false });
   }
 
-  // ✅ BUG-04 FIX: Bound the query to prevent loading thousands of rows
   query = query.limit(50);
-
   const { data: hostels, error } = await query;
-  if (error) return <div className={styles.emptyState}><p>Failed to load hostels. Please try again later.</p></div>;
-  if (!hostels || hostels.length === 0) return <div className={styles.emptyState}><span className={styles.emptyIcon}>🔍</span><h3>No hostels found</h3><p>Try adjusting your filters</p></div>;
 
-  // Batch ratings query (eliminates N+1)
+  if (error) return (
+    <div className={styles.emptyState}>
+      <p>Failed to load hostels. Please try again later.</p>
+    </div>
+  );
+  if (!hostels || hostels.length === 0) return (
+    <div className={styles.emptyState}>
+      <span className={styles.emptyIcon}>🔍</span>
+      <h3>No hostels found</h3>
+      <p>Try adjusting your filters or search query</p>
+    </div>
+  );
+
+  // Batch ratings
   const hostelIds = hostels.map((h) => h.id);
   const { data: allRatings } = await supabase
     .from("ratings").select("overall, reviews!inner(hostel_id)").in("reviews.hostel_id", hostelIds);
@@ -60,22 +74,61 @@ async function HostelsList({ searchParams }: { searchParams: Awaited<PageProps["
     return { ...h, average_rating: rd ? Math.round((rd.sum / rd.count) * 10) / 10 : null, review_count: rd?.count || 0 };
   });
 
-  if (searchParams.sort === "rating") hostelsWithRatings.sort((a, b) => (b.average_rating || 0) - (a.average_rating || 0));
+  if (searchParams.sort === "rating")
+    hostelsWithRatings.sort((a, b) => (b.average_rating || 0) - (a.average_rating || 0));
 
-  return <div className={styles.grid}>{hostelsWithRatings.map((h, i) => <HostelCard key={h.id} hostel={h} index={i} />)}</div>;
+  return (
+    <div className={styles.grid}>
+      {hostelsWithRatings.map((h, i) => <HostelCard key={h.id} hostel={h} index={i} />)}
+    </div>
+  );
+}
+
+function HostelsLoadingSkeleton() {
+  return (
+    <div className={styles.grid}>
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className={styles.skeletonCard}>
+          <div className="skeleton" style={{ height: 8 }} />
+          <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div className="skeleton" style={{ height: 22, width: "65%" }} />
+            <div className="skeleton" style={{ height: 14, width: "45%" }} />
+            <div className="skeleton" style={{ height: 32, width: "30%" }} />
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {[1,2,3,4].map(j => <div key={j} className="skeleton" style={{ height: 6 }} />)}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default async function HostelsPage({ searchParams }: PageProps) {
   const resolvedParams = await searchParams;
   return (
-    <><Header /><main className="page-wrapper"><section className={styles.page}><div className="container">
-      <div className={styles.pageHeader}><h1>Hostels Near Campus</h1><p>Discover verified hostels recommended by KL University students</p></div>
-      <Suspense fallback={<div className="skeleton" style={{ height: 56, borderRadius: 16, marginBottom: 32 }} />}><HostelsFilter /></Suspense>
-      <Suspense fallback={<HostelsLoadingSkeleton />}><HostelsList searchParams={resolvedParams} /></Suspense>
-    </div></section></main><Footer /></>
+    <>
+      <Header />
+      <main className="page-wrapper">
+        <section className={styles.page}>
+          <div className="container">
+            <div className={styles.pageHeader}>
+              <h1>Hostels Near KL University</h1>
+              <p>Reviewed by verified KL students only — Spot the Fake</p>
+            </div>
+            <Suspense fallback={<div className="skeleton" style={{ height: 52, borderRadius: 999, width: 400, marginBottom: 16 }} />}>
+              <HostelsFilter />
+            </Suspense>
+            <div className={styles.gridWrapper}>
+              <Suspense fallback={<HostelsLoadingSkeleton />}>
+                <HostelsList searchParams={resolvedParams} />
+              </Suspense>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+      <BottomNav />
+    </>
   );
-}
-
-function HostelsLoadingSkeleton() {
-  return <div className={styles.grid}>{Array.from({ length: 6 }).map((_, i) => <div key={i} className={styles.skeletonCard}><div className="skeleton" style={{ height: 200 }} /><div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}><div className="skeleton" style={{ height: 24, width: "70%" }} /><div className="skeleton" style={{ height: 16, width: "40%" }} /></div></div>)}</div>;
 }

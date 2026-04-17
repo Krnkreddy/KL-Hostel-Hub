@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FindTheHostel - User Profile</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-tint": "#4f5e81",
+                        "inverse-primary": "#b7c6ee",
+                        "surface-dim": "#d3daea",
+                        "on-primary-fixed": "#091b3a",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#374668",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f9f9ff",
+                        "tertiary-container": "#402600",
+                        "surface-container-highest": "#dce2f3",
+                        "on-background": "#151c27",
+                        "secondary": "#006a61",
+                        "on-surface-variant": "#44474e",
+                        "inverse-on-surface": "#ebf1ff",
+                        "tertiary-fixed": "#ffddb8",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-container-low": "#f0f3ff",
+                        "on-secondary-container": "#006f66",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "outline": "#75777f",
+                        "secondary-fixed": "#89f5e7",
+                        "outline-variant": "#c5c6cf",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#8393b8",
+                        "secondary-container": "#86f2e4",
+                        "tertiary": "#241300",
+                        "surface-container": "#e7eefe",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "surface-variant": "#dce2f3",
+                        "surface-bright": "#f9f9ff",
+                        "primary-container": "#1b2b4b",
+                        "on-surface": "#151c27",
+                        "on-tertiary-container": "#cd8300",
+                        "background": "#f9f9ff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-secondary-fixed": "#00201d",
+                        "on-secondary-fixed-variant": "#005049",
+                        "surface-container-high": "#e2e8f8",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#b7c6ee",
+                        "primary": "#041635",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2a313d",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb95f"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    fontFamily: {
+                        headline: ["Inter", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                        label: ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+<!-- TopNavBar (Hidden on small mobile if strictly following some patterns, but mandate says hide BottomNavBar on WEB, TopNav typically stays or adapts. We'll show full cluster on WEB, minimal on mobile) -->
+<nav class="fixed top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-md shadow-sm bg-slate-100 dark:bg-slate-900 hidden md:block">
+<div class="flex justify-between items-center px-6 py-3 max-w-7xl mx-auto w-full text-slate-900 dark:text-slate-50 font-sans antialiased text-sm">
+<div class="text-xl font-bold text-slate-900 dark:text-slate-50">FindTheHostel</div>
+<div class="flex-1 px-8 flex justify-start">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+<input class="w-full bg-surface-container-low text-on-surface rounded-full pl-10 pr-4 py-2 focus:bg-surface-container-lowest focus:ring-1 focus:ring-outline-variant/40 transition-all border-none placeholder-on-surface-variant/60" placeholder="Search..." type="text"/>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-150">Sign in with Microsoft</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-28 pb-24 md:pb-16 flex flex-col lg:flex-row gap-8 lg:gap-12">
+<!-- Left Column: Profile Card & Settings -->
+<aside class="w-full lg:w-1/3 flex flex-col gap-8">
+<!-- Header Card -->
+<div class="bg-surface-container-lowest rounded-xl p-8 flex flex-col items-center text-center">
+<div class="w-24 h-24 rounded-full bg-primary flex items-center justify-center text-on-primary text-3xl font-headline font-bold mb-4 shadow-[0_12px_32px_rgba(21,28,39,0.06)]">
+                    SK
+                </div>
+<h1 class="text-2xl font-headline font-bold text-on-surface mb-1">Sai Krishna</h1>
+<p class="text-body-md text-on-surface-variant mb-8">Member since April 2025</p>
+<!-- Stat Chips -->
+<div class="flex flex-col w-full gap-3">
+<div class="bg-surface-container-low rounded-lg p-3 flex justify-between items-center w-full">
+<span class="text-label-md text-on-surface-variant">Reviews Written</span>
+<span class="text-title-md font-semibold text-primary">12</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3 flex justify-between items-center w-full">
+<span class="text-label-md text-on-surface-variant">Upvotes Received</span>
+<span class="text-title-md font-semibold text-primary">47</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3 flex justify-between items-center w-full">
+<span class="text-label-md text-on-surface-variant">Hostels Confirmed</span>
+<span class="text-title-md font-semibold text-primary">3</span>
+</div>
+</div><hr class="w-full border-t border-outline-variant/30 mt-8 mb-2"/>
+</div>
+<!-- Account Settings (Quick Actions) -->
+<div class="bg-surface-container-lowest rounded-xl flex flex-col gap-6 pt-10 px-8 pb-8">
+<h2 class="text-base font-bold text-primary mb-2">Account Settings</h2>
+<div class="flex flex-col gap-2">
+<label class="text-label-sm font-medium text-on-surface-variant">Display Name</label>
+<input class="bg-surface-container-low text-on-surface rounded-lg px-4 py-3 focus:bg-surface-container-lowest focus:ring-1 focus:ring-outline-variant/40 transition-all border-none font-body" type="text" value="Sai Krishna"/>
+</div>
+<button class="bg-primary text-on-primary rounded-lg px-4 py-3 font-medium hover:bg-primary-container transition-colors w-full">Save Changes</button>
+<div class="h-4"></div> <!-- Spacer acting as subtle divider -->
+<button class="ring-1 ring-primary/20 text-primary bg-transparent rounded-lg px-4 py-3 font-medium hover:bg-surface-container-low transition-colors w-full flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+                    Sign Out
+                </button>
+<button class="text-error font-medium hover:underline transition-all mt-2 text-center w-full text-sm">Delete Account</button>
+</div>
+</aside>
+<!-- Right Column: Tabs & Content -->
+<section class="w-full lg:w-2/3 flex flex-col gap-8">
+<!-- Tabs (Tonal styling instead of harsh borders per DS, but honoring "teal underline" request subtly) -->
+<div class="flex gap-6 overflow-x-auto pb-2 scrollbar-hide">
+<button class="text-secondary font-headline font-bold pb-2 border-b-2 border-secondary whitespace-nowrap">My Reviews</button>
+<button class="text-on-surface-variant hover:text-on-surface font-headline font-medium pb-2 whitespace-nowrap transition-colors">My Votes</button>
+<button class="text-on-surface-variant hover:text-on-surface font-headline font-medium pb-2 whitespace-nowrap transition-colors">Pending Confirmations</button>
+<button class="text-on-surface-variant hover:text-on-surface font-headline font-medium pb-2 whitespace-nowrap transition-colors lg:hidden">Account Settings</button>
+</div>
+<!-- My Reviews Tab Content (Masonry-lite asymmetric layout) -->
+<div class="grid grid-cols-1 gap-6">
+<!-- Review Card 1 -->
+<article class="bg-surface-container-lowest rounded-xl p-6 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-title-lg font-headline font-bold text-on-surface">Vanguard Mens Hostel</h3>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-outline-variant text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<span class="text-label-sm text-on-surface-variant">Oct 12, 2024</span>
+</div>
+<p class="text-body-md text-on-surface leading-relaxed">
+                        Excellent wifi speeds and the food is consistently good compared to others in the area. The management is fairly responsive to maintenance requests. Only downside is the limited parking space.
+                    </p>
+<div class="flex gap-4 mt-2">
+<button class="text-primary font-medium text-sm hover:underline">Edit</button>
+<button class="text-error font-medium text-sm hover:underline">Delete</button>
+</div>
+</article>
+<!-- Review Card 2 -->
+<article class="bg-surface-container-lowest rounded-xl p-6 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-title-lg font-headline font-bold text-on-surface">Greenwood Premium Residence</h3>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-outline-variant text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-outline-variant text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<span class="text-label-sm text-on-surface-variant">Sep 05, 2024</span>
+</div>
+<p class="text-body-md text-on-surface leading-relaxed">
+                        Rooms are spacious but the cleaning schedule is erratic. It's a bit pricey for the amenities provided, though the location is very close to campus.
+                    </p>
+<div class="flex gap-4 mt-2">
+<button class="text-primary font-medium text-sm hover:underline">Edit</button>
+<button class="text-error font-medium text-sm hover:underline">Delete</button>
+</div>
+</article>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) - Profile is active -->
+<nav class="fixed bottom-0 w-full rounded-t-2xl z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] flex justify-around items-center h-16 px-4 pb-safe md:hidden text-[10px] font-medium tracking-tight text-teal-600 dark:text-teal-400">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-teal-500 transition-all duration-300 ease-out flex-1 py-2" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1">search</span>
+<span>Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-teal-500 transition-all duration-300 ease-out flex-1 py-2" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1">bookmark</span>
+<span>Saved</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-teal-500 transition-all duration-300 ease-out flex-1 py-2" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1">rate_review</span>
+<span>Reviews</span>
+</a>
+<a class="flex flex-col items-center justify-center text-teal-600 dark:text-teal-400 bg-teal-50/50 dark:bg-teal-900/20 rounded-xl px-3 py-1 transition-all duration-300 ease-out flex-1" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1" style="font-variation-settings: 'FILL' 1;">person</span>
+<span>Profile</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="w-full border-t border-slate-100 dark:border-slate-900 bg-slate-50 dark:bg-slate-950 text-teal-600 tonal shift bg-slate-100 flat max-w-7xl mx-auto py-8 px-6 flex flex-col md:flex-row justify-between items-center gap-4 mb-16 md:mb-0">
+<div class="text-lg font-bold text-slate-900">FindTheHostel</div>
+<div class="text-xs text-slate-500 font-normal">
+            © 2024 FindTheHostel. For KL University Students.
+        </div>
+<div class="flex gap-4 text-xs font-normal">
+<a class="text-slate-500 hover:text-slate-900 dark:hover:text-slate-100" href="#">Terms of Service</a>
+<a class="text-slate-500 hover:text-slate-900 dark:hover:text-slate-100" href="#">Privacy Policy</a>
+<a class="text-slate-500 hover:text-slate-900 dark:hover:text-slate-100" href="#">Report Issue</a>
+</div>
+</footer>
+</body></html>

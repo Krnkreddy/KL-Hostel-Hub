@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FindTheHostel - The Academic Curator</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<!-- Tailwind CSS with custom config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#4f5e81",
+                      "inverse-primary": "#b7c6ee",
+                      "surface-dim": "#d3daea",
+                      "on-primary-fixed": "#091b3a",
+                      "on-error": "#ffffff",
+                      "on-primary-fixed-variant": "#374668",
+                      "error-container": "#ffdad6",
+                      "on-secondary": "#ffffff",
+                      "surface": "#f9f9ff",
+                      "tertiary-container": "#402600",
+                      "surface-container-highest": "#dce2f3",
+                      "on-background": "#151c27",
+                      "secondary": "#006a61",
+                      "on-surface-variant": "#44474e",
+                      "inverse-on-surface": "#ebf1ff",
+                      "tertiary-fixed": "#ffddb8",
+                      "primary-fixed": "#d8e2ff",
+                      "surface-container-low": "#f0f3ff",
+                      "on-secondary-container": "#006f66",
+                      "secondary-fixed-dim": "#6bd8cb",
+                      "outline": "#75777f",
+                      "secondary-fixed": "#89f5e7",
+                      "outline-variant": "#c5c6cf",
+                      "on-primary": "#ffffff",
+                      "on-primary-container": "#8393b8",
+                      "secondary-container": "#86f2e4",
+                      "tertiary": "#241300",
+                      "surface-container": "#e7eefe",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "surface-variant": "#dce2f3",
+                      "surface-bright": "#f9f9ff",
+                      "primary-container": "#1b2b4b",
+                      "on-surface": "#151c27",
+                      "on-tertiary-container": "#cd8300",
+                      "background": "#f9f9ff",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed": "#2a1700",
+                      "on-secondary-fixed": "#00201d",
+                      "on-secondary-fixed-variant": "#005049",
+                      "surface-container-high": "#e2e8f8",
+                      "on-error-container": "#93000a",
+                      "primary-fixed-dim": "#b7c6ee",
+                      "primary": "#041635",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-surface": "#2a313d",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-fixed-dim": "#ffb95f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "2xl": "1rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Inter", "sans-serif"],
+                      "body": ["Inter", "sans-serif"],
+                      "label": ["Inter", "sans-serif"]
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased min-h-screen flex flex-col selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar (JSON mapped to Design System) -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md transition-colors shadow-sm">
+<div class="flex justify-between items-center px-6 py-3 max-w-7xl mx-auto w-full">
+<!-- Brand -->
+<div class="flex items-center gap-1 group cursor-pointer">
+<span class="text-xl font-extrabold text-primary font-headline tracking-tight">FindTheHostel</span>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<!-- Search Bar (Academic Curator Style - Tonal) -->
+<div class="hidden md:flex flex-1 max-w-xl mx-8 relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/60 pointer-events-none">search</span>
+<input class="w-full bg-surface-container-low border-none focus:ring-0 focus:bg-surface-container-lowest focus:shadow-[inset_0_0_0_1px_rgba(197,198,207,0.4)] transition-all rounded-full py-2.5 pl-12 pr-4 text-sm font-body text-on-surface placeholder:text-on-surface-variant/60" placeholder="Search hostels near KL University..." type="text"/>
+</div>
+<!-- Action -->
+<button class="bg-primary text-on-primary hover:bg-primary/90 transition-colors rounded-lg px-5 py-2.5 text-sm font-semibold font-label flex items-center gap-2">
+                Sign in with Microsoft
+            </button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 max-w-7xl mx-auto w-full px-6 pt-28 pb-20">
+<!-- Header & Filter Section (Tonal Integration, no strict borders) -->
+<section class="mb-8">
+<h1 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-6 tracking-tight">Hostels Near KL University</h1><p class="text-[#6B7280] text-lg font-medium -mt-4 mb-6">Reviewed by verified KL students only - Spot the Fake</p>
+<div class="flex flex-col md:flex-row md:items-center gap-4 text-sm font-body">
+<!-- Sort Pills -->
+<div class="flex flex-wrap items-center gap-2 bg-surface-container-low p-1.5 rounded-full">
+<button class="bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-full font-semibold transition-colors">
+                        Top Rated
+                    </button>
+<button class="text-on-surface-variant hover:text-on-surface px-4 py-1.5 rounded-full font-medium transition-colors">
+                        Most Reviewed
+                    </button>
+<button class="text-on-surface-variant hover:text-on-surface px-4 py-1.5 rounded-full font-medium transition-colors">
+                        Nearest
+                    </button>
+</div>
+<!-- Filters -->
+<div class="flex items-center gap-3 ml-auto">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-low rounded-lg text-on-surface hover:bg-surface-container-highest transition-colors font-medium">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+                        Filters
+                    </button>
+<div class="hidden sm:flex items-center gap-2 px-4 py-2 bg-surface-container-low rounded-lg text-on-surface-variant">
+<span class="font-medium text-on-surface">Min Rating:</span> 4.0+
+                    </div>
+<div class="hidden sm:flex items-center gap-2 px-4 py-2 bg-surface-container-low rounded-lg text-on-surface-variant">
+<span class="font-medium text-on-surface">Distance:</span> &lt; 2km
+                    </div>
+</div>
+</div>
+</section>
+<!-- The Review Mosaic / Grid (Tonal Layering Principle) -->
+<div class="bg-surface-container-low rounded-2xl p-6 md:p-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1: High Rating (Green/Teal theme mapping) -->
+<article class="bg-surface-container-lowest rounded-[12px] shadow-[0_4px_20px_rgba(21,28,39,0.03)] hover:shadow-[0_12px_32px_rgba(21,28,39,0.06)] transition-all duration-300 relative overflow-hidden flex flex-col">
+<!-- Rating Band -->
+<div class="absolute top-0 left-0 w-full h-[4px] bg-secondary"></div>
+<div class="p-6 flex flex-col flex-1">
+<!-- Header -->
+<div class="mb-4">
+<h2 class="text-xl font-headline font-bold text-primary leading-tight mb-1">Vanguard Mens Hostel</h2>
+<div class="flex items-center text-sm text-on-surface-variant gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span>Vaddeswaram (0.8km)</span>
+</div>
+</div>
+<!-- Main Rating Block -->
+<div class="flex items-end gap-3 mb-6">
+<span class="text-[32px] font-headline font-semibold text-secondary leading-none">4.5</span>
+<div class="flex text-secondary mb-1">
+<span class="material-symbols-outlined icon-fill text-[18px]">star</span>
+<span class="material-symbols-outlined icon-fill text-[18px]">star</span>
+<span class="material-symbols-outlined icon-fill text-[18px]">star</span>
+<span class="material-symbols-outlined icon-fill text-[18px]">star</span>
+<span class="material-symbols-outlined text-[18px]">star_half</span>
+</div>
+</div>
+<!-- Mini Progress Bars (Academic Precision) -->
+<div class="space-y-2.5 mb-6 flex-1 text-sm font-medium text-on-surface-variant">
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Food</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[85%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Cleanliness</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[90%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Staff</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[80%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Room</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[95%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Facilities</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[88%]"></div>
+</div>
+</div>
+</div>
+<!-- Tag Pills -->
+<div class="flex flex-wrap gap-2 mt-auto">
+<span class="bg-secondary-fixed-dim text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-semibold">Clean Rooms</span>
+<span class="bg-secondary-fixed-dim text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-semibold">Good WiFi</span>
+</div>
+</div>
+</article>
+<!-- Card 2: Mid Rating (Amber/Tertiary-fixed-dim theme mapping) -->
+<article class="bg-surface-container-lowest rounded-[12px] shadow-[0_4px_20px_rgba(21,28,39,0.03)] hover:shadow-[0_12px_32px_rgba(21,28,39,0.06)] transition-all duration-300 relative overflow-hidden flex flex-col">
+<!-- Rating Band -->
+<div class="absolute top-0 left-0 w-full h-[4px] bg-tertiary-fixed-dim"></div>
+<div class="p-6 flex flex-col flex-1">
+<!-- Header -->
+<div class="mb-4">
+<h2 class="text-xl font-headline font-bold text-primary leading-tight mb-1">Sri Sai Balaji Hostel</h2>
+<div class="flex items-center text-sm text-on-surface-variant gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span>Mangalagiri (2.1km)</span>
+</div>
+</div>
+<!-- Main Rating Block -->
+<div class="flex items-end gap-3 mb-6">
+<span class="text-[32px] font-headline font-semibold text-tertiary-container leading-none">3.2</span>
+<div class="flex text-tertiary-fixed-dim mb-1">
+<span class="material-symbols-outlined icon-fill text-[18px]">star</span>
+<span class="material-symbols-outlined icon-fill text-[18px]">star</span>
+<span class="material-symbols-outlined icon-fill text-[18px]">star</span>
+<span class="material-symbols-outlined text-[18px]">star</span>
+<span class="material-symbols-outlined text-[18px]">star</span>
+</div>
+</div>
+<!-- Mini Progress Bars -->
+<div class="space-y-2.5 mb-6 flex-1 text-sm font-medium text-on-surface-variant">
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Food</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim w-[40%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Cleanliness</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim w-[65%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Staff</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim w-[70%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Room</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim w-[60%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Facilities</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim w-[55%]"></div>
+</div>
+</div>
+</div>
+<!-- Warning Badge (Contextual Component) -->
+<div class="mt-auto bg-tertiary-fixed/30 text-on-tertiary-container p-3 rounded-lg flex items-start gap-2 text-sm font-medium">
+<span class="material-symbols-outlined text-[18px] mt-0.5">warning</span>
+<span>⚠ Issues reported: Food Quality inconsistency over the last month.</span>
+</div>
+</div>
+</article>
+<!-- Card 3: Low Rating (Red/Error theme mapping) -->
+<article class="bg-surface-container-lowest rounded-[12px] shadow-[0_4px_20px_rgba(21,28,39,0.03)] hover:shadow-[0_12px_32px_rgba(21,28,39,0.06)] transition-all duration-300 relative overflow-hidden flex flex-col">
+<!-- Rating Band -->
+<div class="absolute top-0 left-0 w-full h-[4px] bg-error"></div>
+<div class="p-6 flex flex-col flex-1">
+<!-- Header -->
+<div class="mb-4">
+<h2 class="text-xl font-headline font-bold text-primary leading-tight mb-1">KLU Student Dorms</h2>
+<div class="flex items-center text-sm text-on-surface-variant gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span>On Campus (0.0km)</span>
+</div>
+</div>
+<!-- Main Rating Block -->
+<div class="flex items-end gap-3 mb-6">
+<span class="text-[32px] font-headline font-semibold text-error leading-none">2.1</span>
+<div class="flex text-error mb-1">
+<span class="material-symbols-outlined icon-fill text-[18px]">star</span>
+<span class="material-symbols-outlined icon-fill text-[18px]">star</span>
+<span class="material-symbols-outlined text-[18px]">star</span>
+<span class="material-symbols-outlined text-[18px]">star</span>
+<span class="material-symbols-outlined text-[18px]">star</span>
+</div>
+</div>
+<!-- Mini Progress Bars -->
+<div class="space-y-2.5 mb-6 flex-1 text-sm font-medium text-on-surface-variant">
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Food</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-[20%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Cleanliness</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-[30%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Staff</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-[25%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Room</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-[40%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[80px_1fr] items-center gap-3">
+<span>Facilities</span>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-[35%]"></div>
+</div>
+</div>
+</div>
+<!-- Tag Pills -->
+<div class="flex flex-wrap gap-2 mt-auto mb-3">
+<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-medium">Proximity</span>
+</div>
+<!-- Warning Badge -->
+<div class="mt-auto bg-error-container text-on-error-container p-3 rounded-lg flex items-start gap-2 text-sm font-medium">
+<span class="material-symbols-outlined text-[18px] mt-0.5">gpp_bad</span>
+<span>⚠ Severe issues reported: Cleanliness and Maintenance pending.</span>
+</div>
+</div>
+</article>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (JSON mapped - Hidden on desktop as per constraints, but included for complete component translation) -->
+<nav class="md:hidden fixed bottom-0 w-full rounded-t-2xl z-50 bg-surface/90 backdrop-blur-xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] border-t border-surface-container-low transition-all duration-300 ease-out flex justify-around items-center h-16 px-4 pb-safe">
+<!-- Explore (Active) -->
+<a class="flex flex-col items-center justify-center text-secondary bg-secondary-fixed/30 rounded-xl px-3 py-1" href="#">
+<span class="material-symbols-outlined icon-fill">search</span>
+<span class="text-[10px] font-medium tracking-tight mt-1">Explore</span>
+</a>
+<!-- Saved -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="text-[10px] font-medium tracking-tight mt-1">Saved</span>
+</a>
+<!-- Reviews -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">rate_review</span>
+<span class="text-[10px] font-medium tracking-tight mt-1">Reviews</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium tracking-tight mt-1">Profile</span>
+</a>
+</nav>
+<!-- Footer (JSON mapped) -->
+<footer class="w-full bg-surface-container-low text-on-surface-variant tonal shift pt-12 pb-24 md:pb-12 border-t-0">
+<div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="text-lg font-bold text-primary font-headline tracking-tight">FindTheHostel</div>
+<div class="text-sm font-normal">© 2024 FindTheHostel. For KL University Students.</div>
+<div class="flex gap-6 text-sm font-medium">
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Report Issue</a>
+</div>
+</div>
+</footer>
+</body></html>

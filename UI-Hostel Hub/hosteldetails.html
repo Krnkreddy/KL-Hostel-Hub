@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FindTheHostel - Vanguard Mens Hostel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#4f5e81",
+                        "inverse-primary": "#b7c6ee",
+                        "surface-dim": "#d3daea",
+                        "on-primary-fixed": "#091b3a",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#374668",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f9f9ff",
+                        "tertiary-container": "#402600",
+                        "surface-container-highest": "#dce2f3",
+                        "on-background": "#151c27",
+                        "secondary": "#006a61",
+                        "on-surface-variant": "#44474e",
+                        "inverse-on-surface": "#ebf1ff",
+                        "tertiary-fixed": "#ffddb8",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-container-low": "#f0f3ff",
+                        "on-secondary-container": "#006f66",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "outline": "#75777f",
+                        "secondary-fixed": "#89f5e7",
+                        "outline-variant": "#c5c6cf",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#8393b8",
+                        "secondary-container": "#86f2e4",
+                        "tertiary": "#241300",
+                        "surface-container": "#e7eefe",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "surface-variant": "#dce2f3",
+                        "surface-bright": "#f9f9ff",
+                        "primary-container": "#1b2b4b",
+                        "on-surface": "#151c27",
+                        "on-tertiary-container": "#cd8300",
+                        "background": "#f9f9ff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-secondary-fixed": "#00201d",
+                        "on-secondary-fixed-variant": "#005049",
+                        "surface-container-high": "#e2e8f8",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#b7c6ee",
+                        "primary": "#041635",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2a313d",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb95f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9f9ff; color: #151c27; }
+        .glass-nav { background: rgba(249, 249, 255, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .hero-gradient { background: linear-gradient(135deg, #041635 0%, #1b2b4b 100%); }
+        .soft-shadow { box-shadow: 0 12px 32px rgba(21, 28, 39, 0.06); }
+        .ghost-border { border: 1px solid rgba(197, 198, 207, 0.4); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col bg-surface">
+<!-- Top Navigation (Generated from JSON) -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md shadow-[0_1px_0_rgba(0,0,0,0.05)]">
+<div class="flex justify-between items-center px-6 py-3 max-w-7xl mx-auto w-full">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold text-on-surface tracking-tight">FindTheHostel</span>
+</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-medium text-sm" href="#">Explore</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-medium text-sm" href="#">Saved</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-medium text-sm" href="#">Reviews</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-sm font-semibold text-primary bg-surface-container-low px-4 py-2 rounded-lg hover:bg-surface-container-highest transition-colors">
+                    Sign in with Microsoft
+                </button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-24 pb-32 md:pb-24 px-4 w-full max-w-[860px] mx-auto">
+<!-- Header & Hero Details -->
+<header class="mb-10">
+<div class="flex flex-col gap-3">
+<h1 class="text-4xl md:text-5xl font-bold text-on-surface tracking-tight">Vanguard Mens Hostel</h1>
+<div class="flex items-center gap-3 text-on-surface-variant text-sm font-medium">
+<span class="flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                        Near Green Fields, Vaddeswaram
+                    </span>
+<span class="flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-[18px]">directions_walk</span>
+                        5 mins to KL Campus
+                    </span>
+</div>
+</div>
+</header>
+<!-- Main Rating Banner -->
+<section class="hero-gradient rounded-xl p-8 mb-8 text-on-primary soft-shadow flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex flex-col items-center md:items-start">
+<span class="text-[64px] font-bold leading-none tracking-tighter">4.5</span>
+<div class="flex text-tertiary-fixed-dim mt-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star_half</span>
+</div>
+<p class="text-on-primary-container text-sm mt-1 font-medium">Based on 42 reviews</p>
+</div>
+<div class="hidden md:block w-px h-24 bg-on-primary/20"></div>
+<div class="flex-grow w-full md:w-auto">
+<div class="flex flex-col gap-3">
+<div class="flex items-center text-sm">
+<span class="w-12 text-on-primary-container font-medium">5 star</span>
+<div class="flex-grow h-2 bg-on-primary/20 rounded-full mx-3 overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim rounded-full" style="width: 75%"></div>
+</div>
+<span class="w-8 text-right text-on-primary-container">75%</span>
+</div>
+<div class="flex items-center text-sm">
+<span class="w-12 text-on-primary-container font-medium">4 star</span>
+<div class="flex-grow h-2 bg-on-primary/20 rounded-full mx-3 overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim rounded-full" style="width: 15%"></div>
+</div>
+<span class="w-8 text-right text-on-primary-container">15%</span>
+</div>
+<div class="flex items-center text-sm">
+<span class="w-12 text-on-primary-container font-medium">3 star</span>
+<div class="flex-grow h-2 bg-on-primary/20 rounded-full mx-3 overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim rounded-full" style="width: 5%"></div>
+</div>
+<span class="w-8 text-right text-on-primary-container">5%</span>
+</div>
+<div class="flex items-center text-sm">
+<span class="w-12 text-on-primary-container font-medium">2 star</span>
+<div class="flex-grow h-2 bg-on-primary/20 rounded-full mx-3 overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim rounded-full" style="width: 2%"></div>
+</div>
+<span class="w-8 text-right text-on-primary-container">2%</span>
+</div>
+<div class="flex items-center text-sm">
+<span class="w-12 text-on-primary-container font-medium">1 star</span>
+<div class="flex-grow h-2 bg-on-primary/20 rounded-full mx-3 overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim rounded-full" style="width: 3%"></div>
+</div>
+<span class="w-8 text-right text-on-primary-container">3%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Warning Banner -->
+<div class="bg-tertiary-fixed/30 rounded-xl p-4 mb-8 flex items-start gap-3">
+<span class="material-symbols-outlined text-tertiary-container mt-0.5">warning</span>
+<div>
+<h4 class="font-semibold text-tertiary-container">Actionable Insight</h4>
+<p class="text-sm text-on-tertiary-fixed-variant mt-1">Students have reported consistent issues with: <span class="font-semibold">Room Comfort</span>.</p>
+</div>
+</div>
+<!-- Category Grid -->
+<section class="mb-12">
+<h2 class="text-xl font-bold text-on-surface mb-6">Category Breakdown</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<!-- Category Item -->
+<div class="bg-surface-container-lowest p-5 rounded-xl soft-shadow flex items-center justify-between group hover:bg-surface-container-low transition-colors duration-300">
+<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">restaurant</span></div><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full" style="background-color: #10B981;"></div><span class="font-semibold text-on-surface">Food Quality</span></div></div>
+<span class="text-lg font-bold text-primary" style="color: #10B981;">4.1</span>
+</div>
+<!-- Category Item -->
+<div class="bg-surface-container-lowest p-5 rounded-xl soft-shadow flex items-center justify-between group hover:bg-surface-container-low transition-colors duration-300">
+<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">cleaning_services</span></div><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full" style="background-color: #F59E0B;"></div><span class="font-semibold text-on-surface">Cleanliness</span></div></div>
+<span class="text-lg font-bold text-primary" style="color: #F59E0B;">3.2</span>
+</div>
+<!-- Category Item -->
+<div class="bg-surface-container-lowest p-5 rounded-xl soft-shadow flex items-center justify-between group hover:bg-surface-container-low transition-colors duration-300">
+<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">support_agent</span></div><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full" style="background-color: #10B981;"></div><span class="font-semibold text-on-surface">Staff Behavior</span></div></div>
+<span class="text-lg font-bold text-primary" style="color: #10B981;">4.8</span>
+</div>
+<!-- Category Item (Highlight) -->
+<div class="bg-tertiary-fixed/20 p-5 rounded-xl soft-shadow flex items-center justify-between border-l-4 border-tertiary-container">
+<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-tertiary-container"><span class="material-symbols-outlined text-[20px]">bed</span></div><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full" style="background-color: #F59E0B;"></div><span class="font-semibold text-tertiary-container">Room Comfort</span></div></div>
+<span class="text-lg font-bold text-tertiary-container" style="color: #F59E0B;">2.9</span>
+</div>
+<!-- Category Item -->
+<div class="bg-surface-container-lowest p-5 rounded-xl soft-shadow flex items-center justify-between group hover:bg-surface-container-low transition-colors duration-300 sm:col-span-2">
+<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">fitness_center</span></div><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full" style="background-color: #10B981;"></div><span class="font-semibold text-on-surface">Facilities</span></div></div>
+<span class="text-lg font-bold text-primary" style="color: #10B981;">4.0</span>
+</div>
+</div>
+</section>
+<!-- Reviews Section -->
+<section class="mb-16 scroll-mt-24" id="reviews">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+<h2 class="text-2xl font-bold text-on-surface">Student Reviews (42)</h2>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-primary text-on-primary text-sm font-semibold rounded-full shadow-sm">Most Helpful</button>
+<button class="px-4 py-2 bg-surface-container-low text-on-surface-variant hover:bg-surface-container-highest transition-colors text-sm font-semibold rounded-full">Most Recent</button>
+</div>
+</div>
+<div class="space-y-6">
+<!-- Review Card -->
+<article class="bg-surface-container-lowest rounded-xl p-6 soft-shadow relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary rounded-l-xl"></div>
+<div class="flex justify-between items-start mb-4 pl-2">
+<div class="flex gap-3 items-center">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-lg font-bold text-primary">RK</div>
+<div>
+<h3 class="font-bold text-on-surface">Rahul K.</h3>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="text-xs font-medium text-secondary bg-secondary-container/30 px-2 py-0.5 rounded-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span> Verified KL Student
+                                    </span>
+<span class="text-xs text-on-surface-variant">Oct 12, 2023</span>
+</div>
+</div>
+</div>
+<div class="flex text-tertiary-fixed-dim">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]">star</span>
+</div>
+</div>
+<p class="text-on-surface-variant leading-relaxed text-sm pl-2 mb-6">
+                        The staff is incredibly helpful and the food quality is better than most places around campus. The rooms are a bit cramped if you're in a 3-sharing, and ventilation could be improved. Overall, a solid choice for the price.
+                    </p>
+<div class="flex items-center justify-between pl-2">
+<button class="flex items-center gap-2 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors group">
+<span class="material-symbols-outlined text-[18px] group-hover:-translate-y-0.5 transition-transform">thumb_up</span>
+                            Helpful (12)
+                        </button>
+<button class="text-xs font-medium text-on-surface-variant hover:text-error transition-colors">
+                            Report
+                        </button>
+</div>
+</article>
+<!-- Review Card -->
+<article class="bg-surface-container-lowest rounded-xl p-6 soft-shadow relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-surface-container-highest rounded-l-xl"></div>
+<div class="flex justify-between items-start mb-4 pl-2">
+<div class="flex gap-3 items-center">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-lg font-bold text-primary">SV</div>
+<div>
+<h3 class="font-bold text-on-surface">Sanjay V.</h3>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="text-xs text-on-surface-variant">Sep 28, 2023</span>
+</div>
+</div>
+</div>
+<div class="flex text-tertiary-fixed-dim">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]">star</span>
+<span class="material-symbols-outlined text-[16px]">star</span>
+</div>
+</div>
+<p class="text-on-surface-variant leading-relaxed text-sm pl-2 mb-6">
+                        Wi-Fi is terrible on the upper floors. You have to sit near the door to get a decent signal. Management says they will fix it but it's been months.
+                    </p>
+<div class="flex items-center justify-between pl-2">
+<button class="flex items-center gap-2 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors group">
+<span class="material-symbols-outlined text-[18px] group-hover:-translate-y-0.5 transition-transform">thumb_up</span>
+                            Helpful (4)
+                        </button>
+<button class="text-xs font-medium text-on-surface-variant hover:text-error transition-colors">
+                            Report
+                        </button>
+</div>
+</article>
+</div>
+<div class="mt-8 text-center">
+<button class="text-primary font-semibold hover:underline text-sm">View all 42 reviews</button>
+</div>
+</section>
+<!-- Write a Review Form -->
+<section>
+<h2 class="text-xl font-bold text-on-surface mb-6">Leave a Review</h2>
+<div class="bg-surface-container-lowest rounded-xl p-8 soft-shadow relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary rounded-l-xl"></div>
+<form class="pl-2 flex flex-col gap-6">
+<!-- Overall Rating -->
+<div>
+<label class="block text-sm font-bold text-on-surface mb-3">Overall Rating</label>
+<div class="flex gap-2 text-surface-container-highest cursor-pointer">
+<span class="material-symbols-outlined text-[32px] hover:text-tertiary-fixed-dim transition-colors">star</span>
+<span class="material-symbols-outlined text-[32px] hover:text-tertiary-fixed-dim transition-colors">star</span>
+<span class="material-symbols-outlined text-[32px] hover:text-tertiary-fixed-dim transition-colors">star</span>
+<span class="material-symbols-outlined text-[32px] hover:text-tertiary-fixed-dim transition-colors">star</span>
+<span class="material-symbols-outlined text-[32px] hover:text-tertiary-fixed-dim transition-colors">star</span>
+</div>
+</div>
+<!-- Category Ratings Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 pt-4 border-t border-surface-container-low">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium text-on-surface-variant">Food Quality</span>
+<div class="flex text-surface-container-highest cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium text-on-surface-variant">Cleanliness</span>
+<div class="flex text-surface-container-highest cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+</div>
+</div>
+</div>
+<!-- Review Text -->
+<div class="pt-4 border-t border-surface-container-low">
+<label class="block text-sm font-bold text-on-surface mb-2" for="review-text">Your Experience</label>
+<p class="text-xs text-on-surface-variant mb-3">Be specific about what you liked or disliked.</p>
+<textarea class="w-full bg-surface-container-low border-none rounded-lg p-4 text-sm text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors resize-none" id="review-text" placeholder="Write your review here..." rows="4"></textarea>
+</div>
+<!-- Recommendation Toggle -->
+<div>
+<label class="block text-sm font-bold text-on-surface mb-3">Would you recommend this hostel?</label>
+<div class="flex gap-3">
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="recommend" type="radio"/>
+<div class="text-center py-3 rounded-lg border border-outline-variant/40 peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:border-secondary-container transition-all font-medium text-sm text-on-surface-variant">
+                                    Yes
+                                </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="recommend" type="radio"/>
+<div class="text-center py-3 rounded-lg border border-outline-variant/40 peer-checked:bg-error-container peer-checked:text-on-error-container peer-checked:border-error-container transition-all font-medium text-sm text-on-surface-variant">
+                                    No
+                                </div>
+</label>
+</div>
+</div>
+<!-- Submit Action -->
+<div class="pt-4 flex justify-end">
+<button class="bg-secondary text-on-secondary px-8 py-3 rounded-lg font-bold hover:bg-secondary/90 transition-colors shadow-sm" type="button">
+                            Submit Review
+                        </button>
+</div>
+</form>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile Only - Generated from JSON) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface/90 backdrop-blur-xl border-t border-surface-container shadow-[0_-4px_20px_rgba(0,0,0,0.05)] pb-safe">
+<div class="flex justify-around items-center h-16 px-2">
+<a class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">search</span>
+<span class="text-[10px] font-medium tracking-tight">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">bookmark</span>
+<span class="text-[10px] font-medium tracking-tight">Saved</span>
+</a>
+<!-- Active State Logic Applied to Reviews -->
+<a class="flex flex-col items-center justify-center w-full h-full text-primary relative" href="#reviews">
+<div class="absolute inset-0 bg-primary/10 rounded-xl m-1 z-[-1]"></div>
+<span class="material-symbols-outlined mb-1 text-[24px]" style="font-variation-settings: 'FILL' 1;">rate_review</span>
+<span class="text-[10px] font-medium tracking-tight">Reviews</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">person</span>
+<span class="text-[10px] font-medium tracking-tight">Profile</span>
+</a>
+</div>
+</nav>
+</body></html>

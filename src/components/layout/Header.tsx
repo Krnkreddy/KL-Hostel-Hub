@@ -1,20 +1,22 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import styles from "./Header.module.css";
 
 export default function Header() {
   const [user, setUser] = useState<any>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const menuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getUser().then(({ data: { user } }) => setUser(user));
   }, []);
 
-  // ✅ BUG-07 FIX: Close dropdown on outside click
   useEffect(() => {
     if (!menuOpen) return;
     const handleClickOutside = (e: MouseEvent) => {
@@ -30,24 +32,68 @@ export default function Header() {
     ? user.user_metadata.full_name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2)
     : user?.email?.[0]?.toUpperCase() || "?";
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchValue.trim()) {
+      window.location.href = `/hostels?search=${encodeURIComponent(searchValue.trim())}`;
+    }
+  };
+
   return (
     <header className={styles.header}>
-      <div className={`container ${styles.inner}`}>
-        <Link href="/" className={styles.logo}>🏠 KL <span>Hostel Hub</span></Link>
-        <nav className={styles.nav}>
-          <Link href="/hostels" className={styles.navLink}>Hostels</Link>
+      <div className={styles.inner}>
+        {/* Brand */}
+        <Link href="/" className={styles.brand}>
+          <span className={styles.brandText}>FindTheHostel</span>
+          <span className={styles.brandDot}></span>
+        </Link>
+
+        {/* Search bar — desktop */}
+        <form className={styles.searchForm} onSubmit={handleSearch}>
+          <span className="material-symbols-outlined" style={{ color: "var(--color-outline)", fontSize: 20 }}>search</span>
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Search hostels near KL University..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            id="header-search"
+          />
+        </form>
+
+        {/* Actions */}
+        <nav className={styles.actions}>
           {user ? (
             <div className={styles.userMenu} ref={menuRef}>
-              <button className={styles.avatar} onClick={() => setMenuOpen(!menuOpen)}>{initials}</button>
+              <button
+                className={styles.avatar}
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label="User menu"
+              >
+                {initials}
+              </button>
               {menuOpen && (
                 <div className={styles.dropdown}>
-                  <Link href="/profile" className={styles.dropItem} onClick={() => setMenuOpen(false)}>Profile</Link>
-                  <Link href="/auth/signout" className={styles.dropItem} onClick={() => setMenuOpen(false)}>Sign Out</Link>
+                  <Link href="/profile" className={styles.dropItem} onClick={() => setMenuOpen(false)}>
+                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>person</span>
+                    Profile
+                  </Link>
+                  <Link href="/hostels" className={styles.dropItem} onClick={() => setMenuOpen(false)}>
+                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>search</span>
+                    Explore
+                  </Link>
+                  <div className={styles.dropDivider} />
+                  <Link href="/auth/signout" className={`${styles.dropItem} ${styles.dropItemDanger}`} onClick={() => setMenuOpen(false)}>
+                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>logout</span>
+                    Sign Out
+                  </Link>
                 </div>
               )}
             </div>
           ) : (
-            <Link href="/login" className="btn btn-primary btn-sm">Sign In</Link>
+            <Link href="/login" className={styles.signInBtn}>
+              Sign in with Microsoft
+            </Link>
           )}
         </nav>
       </div>
