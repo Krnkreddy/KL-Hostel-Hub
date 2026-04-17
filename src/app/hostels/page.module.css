@@ -1,0 +1,9 @@
+.page { padding: var(--space-8) 0 var(--space-16); }
+.pageHeader { margin-bottom: var(--space-8); }
+.pageHeader h1 { font-size: var(--text-3xl); margin-bottom: var(--space-2); }
+.pageHeader p { color: var(--color-text-secondary); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-6); }
+.emptyState { text-align: center; padding: var(--space-16); color: var(--color-text-secondary); }
+.emptyIcon { font-size: 3rem; display: block; margin-bottom: var(--space-4); }
+.skeletonCard { border-radius: var(--radius-xl); overflow: hidden; background: var(--color-bg-glass); border: 1px solid var(--color-border); }
+@media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
