@@ -33,6 +33,9 @@ async function HostelsList({ searchParams }: { searchParams: Awaited<PageProps["
     default: query = query.order("is_verified", { ascending: false }).order("created_at", { ascending: false });
   }
 
+  // ✅ BUG-04 FIX: Bound the query to prevent loading thousands of rows
+  query = query.limit(50);
+
   const { data: hostels, error } = await query;
   if (error) return <div className={styles.emptyState}><p>Failed to load hostels. Please try again later.</p></div>;
   if (!hostels || hostels.length === 0) return <div className={styles.emptyState}><span className={styles.emptyIcon}>🔍</span><h3>No hostels found</h3><p>Try adjusting your filters</p></div>;

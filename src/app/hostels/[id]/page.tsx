@@ -25,7 +25,8 @@ export default async function HostelDetailPage({ params }: { params: Promise<{ i
   const { data: ratingsData } = await supabase.rpc("get_hostel_ratings", { hostel_uuid: id });
   const ratings: AggregateRating | null = ratingsData?.[0] || null;
 
-  const { data: reviews } = await supabase.from("reviews").select("*, profile:profiles(*), rating:ratings(*), images:review_images(*)").eq("hostel_id", id).order("created_at", { ascending: false });
+  // ✅ BUG-04 FIX: Limit reviews to 20 per page to prevent unbounded loads
+  const { data: reviews } = await supabase.from("reviews").select("*, profile:profiles(*), rating:ratings(*), images:review_images(*)").eq("hostel_id", id).order("created_at", { ascending: false }).limit(20);
   const { data: { user } } = await supabase.auth.getUser();
 
   let hasReviewed = false;

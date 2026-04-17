@@ -1,3 +1,9 @@
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+export function isValidUUID(value: unknown): value is string {
+  return typeof value === "string" && UUID_REGEX.test(value);
+}
+
 export function sanitizeSearchInput(input: string): string {
   return input.replace(/[,().\\%_]/g, " ").replace(/\s+/g, " ").trim().slice(0, 100);
 }
@@ -17,7 +23,7 @@ export function isValidRating(value: unknown): value is number {
 }
 
 export function validateRatings(input: Record<string, unknown>) {
-  const keys = ["overall","cleanliness","food_quality","wifi_quality","safety","value_for_money","management"] as const;
+  const keys = ["overall", "cleanliness", "food_quality", "wifi_quality", "safety", "value_for_money", "management"] as const;
   const result: Record<string, number> = {};
   for (const key of keys) {
     if (!isValidRating(input[key])) return null;
@@ -64,6 +70,7 @@ export async function detectFileType(file: File): Promise<string | null> {
   const bytes = new Uint8Array(buffer);
   if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) return "image/jpeg";
   if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47) return "image/png";
-  if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 && bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50) return "image/webp";
+  if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 &&
+      bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50) return "image/webp";
   return null;
 }
