@@ -1,9 +1,18 @@
 .wrapper { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
-.label { font-size: var(--text-sm); color: var(--color-text-secondary); min-width: 140px; }
-.stars { display: flex; gap: 2px; }
-.star { background: none; border: none; cursor: pointer; color: var(--color-border-hover); transition: color var(--transition-fast); padding: 2px; }
-.star.filled { color: var(--color-accent); }
-.star:hover:not(:disabled) { color: var(--color-accent-light); }
+.label { font-size: var(--text-sm); color: var(--color-on-surface-variant); min-width: 140px; font-weight: 500; }
+.stars { display: flex; gap: 4px; }
+.star {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-outline-variant);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  padding: 2px;
+  line-height: 1;
+}
+.star.filled { color: #f59e0b; }
+.star:hover:not(:disabled) { color: #fbbf24; transform: scale(1.15); }
+.star:disabled { cursor: default; }
 .sm .star { font-size: 1rem; }
 .md .star { font-size: 1.25rem; }
-.lg .star { font-size: 1.5rem; }
+.lg .star { font-size: 1.75rem; }

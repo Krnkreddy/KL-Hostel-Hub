@@ -6,9 +6,18 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import StarRating from "@/components/ui/StarRating";
 import { createClient } from "@/lib/supabase/client";
-import { RATING_CATEGORIES, type ReviewFormData } from "@/types";
+import type { ReviewFormData } from "@/types";
 import { MAX_REVIEW_IMAGES, MAX_IMAGE_SIZE_BYTES, ALLOWED_IMAGE_TYPES } from "@/lib/constants";
 import styles from "./page.module.css";
+
+const CATEGORY_RATINGS = [
+  { key: "cleanliness", label: "Cleanliness", icon: "🧹" },
+  { key: "food_quality", label: "Food Quality", icon: "🍽️" },
+  { key: "wifi_quality", label: "WiFi", icon: "📶" },
+  { key: "safety", label: "Safety", icon: "🔒" },
+  { key: "value_for_money", label: "Value for Money", icon: "💰" },
+  { key: "management", label: "Management", icon: "👥" },
+] as const;
 
 export default function WriteReviewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: hostelId } = use(params);
@@ -21,16 +30,23 @@ export default function WriteReviewPage({ params }: { params: Promise<{ id: stri
     wifi_quality: 0, safety: 0, value_for_money: 0, management: 0, images: [],
   });
 
-  // ✅ BUG-02 FIX: Memoize preview URLs — only recalculated when images array changes
+  // Auto-calculate overall as average of 6 category ratings
+  const computedOverall = useMemo(() => {
+    const cats = [formData.cleanliness, formData.food_quality, formData.wifi_quality,
+      formData.safety, formData.value_for_money, formData.management];
+    const rated = cats.filter((v) => v > 0);
+    if (rated.length === 0) return 0;
+    return Math.round(rated.reduce((a, b) => a + b, 0) / rated.length);
+  }, [formData.cleanliness, formData.food_quality, formData.wifi_quality,
+    formData.safety, formData.value_for_money, formData.management]);
+
+  // ✅ BUG-02 FIX: Memoize preview URLs
   const previewUrls = useMemo(() => {
     return formData.images.map((f) => URL.createObjectURL(f));
   }, [formData.images]);
 
-  // ✅ BUG-02 FIX: Revoke ALL preview URLs when images change or component unmounts
   useEffect(() => {
-    return () => {
-      previewUrls.forEach((url) => URL.revokeObjectURL(url));
-    };
+    return () => { previewUrls.forEach((url) => URL.revokeObjectURL(url)); };
   }, [previewUrls]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,11 +67,9 @@ export default function WriteReviewPage({ params }: { params: Promise<{ id: stri
   };
 
   const validate = (): string | null => {
-    if (formData.title.trim().length < 3) return "Title must be at least 3 characters";
     if (formData.content.trim().length < 10) return "Review must be at least 10 characters";
-    if (formData.overall === 0) return "Please rate your overall experience";
-    for (const k of ["cleanliness", "food_quality", "wifi_quality", "safety", "value_for_money", "management"]) {
-      if (formData[k as keyof ReviewFormData] === 0) return `Please rate ${k.replace(/_/g, " ")}`;
+    for (const c of CATEGORY_RATINGS) {
+      if (formData[c.key as keyof ReviewFormData] === 0) return `Please rate ${c.label}`;
     }
     return null;
   };
@@ -72,13 +86,16 @@ export default function WriteReviewPage({ params }: { params: Promise<{ id: stri
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push("/login"); return; }
 
+      // Auto-generate title from first 60 chars of content
+      const autoTitle = formData.content.trim().substring(0, 60) + (formData.content.trim().length > 60 ? "..." : "");
+
       // Step 1: Create review
       const { data: review, error: re } = await supabase
         .from("reviews")
         .insert({
           hostel_id: hostelId,
           user_id: user.id,
-          title: formData.title.trim(),
+          title: autoTitle,
           content: formData.content.trim(),
           stay_duration: formData.stay_duration || null,
         })
@@ -91,10 +108,10 @@ export default function WriteReviewPage({ params }: { params: Promise<{ id: stri
         return;
       }
 
-      // Step 2: Create ratings
+      // Step 2: Create ratings (overall auto-computed)
       const { error: ratErr } = await supabase.from("ratings").insert({
         review_id: review.id,
-        overall: formData.overall,
+        overall: computedOverall,
         cleanliness: formData.cleanliness,
         food_quality: formData.food_quality,
         wifi_quality: formData.wifi_quality,
@@ -110,18 +127,15 @@ export default function WriteReviewPage({ params }: { params: Promise<{ id: stri
         return;
       }
 
-      // ✅ BUG-01 FIX: Upload images through /api/upload (server-side validated)
-      // NOT directly to Supabase Storage. The API validates magic bytes, size, count.
+      // ✅ BUG-01 FIX: Upload images through /api/upload
       for (const file of formData.images) {
         const body = new FormData();
         body.append("file", file);
         body.append("review_id", review.id);
-
         const res = await fetch("/api/upload", { method: "POST", body });
         if (!res.ok) {
           const data = await res.json().catch(() => ({}));
           console.warn("Image upload failed:", data.error || res.statusText);
-          // Non-blocking: review is saved, image upload failure is logged but doesn't fail the review
         }
       }
 
@@ -145,18 +159,12 @@ export default function WriteReviewPage({ params }: { params: Promise<{ id: stri
             <div className={styles.formWrapper}>
               <h1 className={styles.title}>Write a Review</h1>
               <p className={styles.subtitle}>Share your experience to help other students</p>
-              {error && (
-                <div className={styles.errorAlert}>
-                  <span>⚠️</span>
-                  <p>{error}</p>
-                </div>
-              )}
               <form onSubmit={handleSubmit} className={styles.form}>
                 {/* Ratings */}
                 <div className={styles.ratingsSection}>
                   <h2>Rate Your Experience</h2>
                   <div className={styles.ratingsList}>
-                    {RATING_CATEGORIES.map((c) => (
+                    {CATEGORY_RATINGS.map((c) => (
                       <StarRating
                         key={c.key}
                         label={`${c.icon} ${c.label}`}
@@ -166,18 +174,12 @@ export default function WriteReviewPage({ params }: { params: Promise<{ id: stri
                       />
                     ))}
                   </div>
-                </div>
-
-                {/* Title */}
-                <div className="form-group">
-                  <label className="form-label" htmlFor="review-title">Review Title *</label>
-                  <input
-                    id="review-title" type="text" className="form-input"
-                    placeholder="Summarize your experience" value={formData.title}
-                    onChange={(e) => setFormData((p) => ({ ...p, title: e.target.value }))}
-                    maxLength={200} required
-                  />
-                  <span className={styles.charCount}>{formData.title.length}/200</span>
+                  {/* Auto-calculated overall */}
+                  {computedOverall > 0 && (
+                    <div className={styles.overallBadge}>
+                      Overall: <strong>{computedOverall}/5</strong> ★
+                    </div>
+                  )}
                 </div>
 
                 {/* Content */}
@@ -221,23 +223,25 @@ export default function WriteReviewPage({ params }: { params: Promise<{ id: stri
                       multiple onChange={handleImageChange} style={{ display: "none" }}
                     />
                   </div>
-                  {/* ✅ BUG-02 FIX: Uses memoized previewUrls, not createObjectURL in render */}
                   {formData.images.length > 0 && (
                     <div className={styles.imagePreviews}>
                       {formData.images.map((_, i) => (
                         <div key={i} className={styles.imagePreview}>
                           <img src={previewUrls[i]} alt={`Preview ${i + 1}`} />
-                          <button
-                            type="button" className={styles.removeImage}
-                            onClick={() => removeImage(i)}
-                          >
-                            ✕
-                          </button>
+                          <button type="button" className={styles.removeImage} onClick={() => removeImage(i)}>✕</button>
                         </div>
                       ))}
                     </div>
                   )}
                 </div>
+
+                {/* Error near submit */}
+                {error && (
+                  <div className={styles.errorAlert}>
+                    <span>⚠️</span>
+                    <p>{error}</p>
+                  </div>
+                )}
 
                 {/* Submit */}
                 <button

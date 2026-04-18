@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useState, useCallback } from "react";
+import { useCallback, useTransition } from "react";
 import styles from "./HostelsFilter.module.css";
 
 const SORT_PILLS = [
@@ -15,7 +15,7 @@ export default function HostelsFilter() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [filterOpen, setFilterOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const activeSort = searchParams.get("sort") || "";
 
@@ -26,13 +26,15 @@ export default function HostelsFilter() {
   }, [searchParams]);
 
   const setSort = (value: string) => {
-    router.push(`${pathname}?${createQS({ sort: value })}`);
+    startTransition(() => {
+      router.replace(`${pathname}?${createQS({ sort: value })}`);
+    });
   };
 
   const hasFilters = searchParams.get("gender") || searchParams.get("sort");
 
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} ${isPending ? styles.pending : ""}`}>
       {/* Sort pills */}
       <div className={styles.pillGroup}>
         {SORT_PILLS.map((pill) => (
@@ -46,24 +48,16 @@ export default function HostelsFilter() {
         ))}
       </div>
 
-      {/* Filter row */}
+      {/* Gender filter */}
       <div className={styles.filterRow}>
-        <button
-          className={styles.filterBtn}
-          onClick={() => setFilterOpen(!filterOpen)}
-          aria-expanded={filterOpen}
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: 18 }}>tune</span>
-          Filters
-        </button>
-
-        {/* Gender filter */}
         <div className={styles.filterChip}>
           <span className={styles.filterChipLabel}>Gender:</span>
           <select
             className={styles.filterSelect}
             value={searchParams.get("gender") || "all"}
-            onChange={(e) => router.push(`${pathname}?${createQS({ gender: e.target.value })}`)}
+            onChange={(e) => startTransition(() => {
+              router.replace(`${pathname}?${createQS({ gender: e.target.value })}`);
+            })}
           >
             <option value="all">All</option>
             <option value="male">Male</option>
@@ -73,7 +67,7 @@ export default function HostelsFilter() {
         </div>
 
         {hasFilters && (
-          <button className={styles.clearBtn} onClick={() => router.push(pathname)}>
+          <button className={styles.clearBtn} onClick={() => startTransition(() => router.replace(pathname))}>
             ✕ Clear
           </button>
         )}

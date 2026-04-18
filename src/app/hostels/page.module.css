@@ -1,6 +1,6 @@
 .page { padding: var(--space-8) 0 var(--space-16); }
 
-.pageHeader { margin-bottom: var(--space-6); }
+.pageHeader { margin-bottom: var(--space-6); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
 .pageHeader h1 {
   font-size: clamp(1.75rem, 4vw, var(--text-4xl));
   font-weight: 700;

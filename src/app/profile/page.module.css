@@ -193,3 +193,16 @@
   padding: var(--space-16);
   font-size: var(--text-sm);
 }
+
+.editNameBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-on-surface-variant);
+  padding: 4px;
+  border-radius: var(--radius-full);
+  transition: color var(--transition-fast), background var(--transition-fast);
+  display: flex;
+  align-items: center;
+}
+.editNameBtn:hover { color: var(--color-primary); background: var(--color-surface-container-low); }

@@ -7,6 +7,7 @@ import HostelCard from "@/components/hostels/HostelCard";
 import HostelsFilter from "@/components/hostels/HostelsFilter";
 import { sanitizeSearchInput } from "@/lib/utils/validation";
 import type { Hostel } from "@/types";
+import Link from "next/link";
 import styles from "./page.module.css";
 
 export const metadata = {
@@ -113,8 +114,11 @@ export default async function HostelsPage({ searchParams }: PageProps) {
         <section className={styles.page}>
           <div className="container">
             <div className={styles.pageHeader}>
-              <h1>Hostels Near KL University</h1>
-              <p>Reviewed by verified KL students only — Spot the Fake</p>
+              <div>
+                <h1>Hostels Near KL University</h1>
+                <p>Reviewed by verified KL students only — Spot the Fake</p>
+              </div>
+              <AdminAddButton />
             </div>
             <Suspense fallback={<div className="skeleton" style={{ height: 52, borderRadius: 999, width: 400, marginBottom: 16 }} />}>
               <HostelsFilter />
@@ -130,5 +134,19 @@ export default async function HostelsPage({ searchParams }: PageProps) {
       <Footer />
       <BottomNav />
     </>
+  );
+}
+
+async function AdminAddButton() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
+  if (!profile || profile.role !== "admin") return null;
+  return (
+    <Link href="/hostels/add" className="btn btn-secondary">
+      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>add</span>
+      Add Hostel
+    </Link>
   );
 }

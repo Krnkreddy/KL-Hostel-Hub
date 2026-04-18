@@ -6,6 +6,7 @@ import BottomNav from "@/components/layout/BottomNav";
 import { createClient } from "@/lib/supabase/server";
 import { formatRelativeTime } from "@/lib/utils/format";
 import DeleteReviewButton from "@/components/reviews/DeleteReviewButton";
+import EditNameButton from "@/components/profile/EditNameButton";
 import styles from "./page.module.css";
 
 export const metadata = { title: "My Profile" };
@@ -36,7 +37,10 @@ export default async function ProfilePage() {
                 {/* Profile card */}
                 <div className={styles.profileCard}>
                   <div className={styles.avatar}>{initials}</div>
-                  <h1 className={styles.profileName}>{displayName}</h1>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, justifyContent: "center" }}>
+                    <h1 className={styles.profileName}>{displayName}</h1>
+                    <EditNameButton userId={user.id} currentName={displayName} className={styles.editNameBtn} />
+                  </div>
                   <p className={styles.profileMeta}>Member since {memberSince}</p>
 
                   <div className={styles.statChips}>
