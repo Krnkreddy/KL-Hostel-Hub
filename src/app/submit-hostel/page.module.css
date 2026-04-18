@@ -1,0 +1,25 @@
+.page { padding: 2rem 0 4rem; }
+.title { font-size: 1.875rem; margin-bottom: 8px; }
+.subtitle { color: var(--color-on-surface-variant); margin-bottom: 2rem; }
+.form { display: flex; flex-direction: column; gap: 1.25rem; }
+.amenityChips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 4px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
+  border: none; cursor: pointer; transition: all var(--transition-fast);
+  background: var(--color-surface-container-low); color: var(--color-on-surface-variant);
+  font-family: var(--font-body);
+}
+.chipActive { background: var(--color-secondary); color: white; }
+.errorBox {
+  padding: 0.75rem 1rem; background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.2); border-radius: 12px;
+  color: var(--color-error); font-size: 0.875rem;
+}
+.successCard {
+  text-align: center; padding: 3rem 2rem;
+  background: var(--color-surface-container-lowest);
+  border-radius: var(--radius-xl); box-shadow: var(--shadow-md);
+  margin-top: 2rem;
+}
+.successCard h2 { margin: 1rem 0 0.5rem; }
+.successCard p { color: var(--color-on-surface-variant); font-size: var(--text-sm); margin-bottom: 0.25rem; }

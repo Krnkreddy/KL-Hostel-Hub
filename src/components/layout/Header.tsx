@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import NotificationBadge from "./NotificationBadge";
 import styles from "./Header.module.css";
 
 export default function Header() {
@@ -65,35 +66,45 @@ export default function Header() {
           />
         </form>
 
-        {/* Actions */}
         <nav className={styles.actions}>
           {user ? (
-            <div className={styles.userMenu} ref={menuRef}>
-              <button
-                className={styles.avatar}
-                onClick={() => setMenuOpen(!menuOpen)}
-                aria-label="User menu"
-              >
-                {initials}
-              </button>
-              {menuOpen && (
-                <div className={styles.dropdown}>
-                  <Link href="/profile" className={styles.dropItem} onClick={() => setMenuOpen(false)}>
-                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>person</span>
-                    Profile
-                  </Link>
-                  <Link href="/hostels" className={styles.dropItem} onClick={() => setMenuOpen(false)}>
-                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>search</span>
-                    Explore
-                  </Link>
-                  <div className={styles.dropDivider} />
-                  <Link href="/auth/signout" className={`${styles.dropItem} ${styles.dropItemDanger}`} onClick={() => setMenuOpen(false)}>
-                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>logout</span>
-                    Sign Out
-                  </Link>
-                </div>
-              )}
-            </div>
+            <>
+              <NotificationBadge />
+              <div className={styles.userMenu} ref={menuRef}>
+                <button
+                  className={styles.avatar}
+                  onClick={() => setMenuOpen(!menuOpen)}
+                  aria-label="User menu"
+                >
+                  {initials}
+                </button>
+                {menuOpen && (
+                  <div className={styles.dropdown}>
+                    <Link href="/profile" className={styles.dropItem} onClick={() => setMenuOpen(false)}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>person</span>
+                      Profile
+                    </Link>
+                    <Link href="/hostels" className={styles.dropItem} onClick={() => setMenuOpen(false)}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>search</span>
+                      Explore
+                    </Link>
+                    <Link href="/community" className={styles.dropItem} onClick={() => setMenuOpen(false)}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>groups</span>
+                      Community
+                    </Link>
+                    <Link href="/submit-hostel" className={styles.dropItem} onClick={() => setMenuOpen(false)}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>add_circle</span>
+                      Suggest Hostel
+                    </Link>
+                    <div className={styles.dropDivider} />
+                    <Link href="/auth/signout" className={`${styles.dropItem} ${styles.dropItemDanger}`} onClick={() => setMenuOpen(false)}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>logout</span>
+                      Sign Out
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </>
           ) : (
             <Link href="/login" className={styles.signInBtn}>
               Sign in with Microsoft

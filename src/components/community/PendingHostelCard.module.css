@@ -1,0 +1,43 @@
+.card {
+  background: var(--color-surface-container-lowest);
+  border-radius: var(--radius-xl); padding: 1.25rem;
+  box-shadow: var(--shadow-sm); display: flex;
+  flex-direction: column; gap: 0.75rem;
+  border-left: 4px solid var(--color-tertiary-fixed-dim);
+}
+.cardTop { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
+.name { font-size: 1.125rem; font-weight: 700; color: var(--color-primary); font-family: var(--font-headline); }
+.badge {
+  padding: 2px 10px; border-radius: 999px; font-size: 0.7rem; font-weight: 600;
+  background: rgba(245, 158, 11, 0.15); color: #d97706; white-space: nowrap;
+}
+.location { font-size: 0.8rem; color: var(--color-on-surface-variant); }
+.desc { font-size: 0.8rem; color: var(--color-on-surface-variant); line-height: 1.5; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag {
+  padding: 2px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 500;
+  background: var(--color-surface-container-high); color: var(--color-on-surface-variant);
+}
+.amenities { display: flex; flex-wrap: wrap; gap: 4px; }
+.amenityChip {
+  padding: 2px 8px; border-radius: 999px; font-size: 0.65rem;
+  background: var(--color-surface-container-low); color: var(--color-on-surface-variant);
+}
+.footer { display: flex; justify-content: space-between; align-items: center; }
+.votes { display: flex; gap: 8px; }
+.voteBtn {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 12px; border-radius: var(--radius-lg);
+  border: 1px solid transparent; background: var(--color-surface-container-low);
+  font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  color: var(--color-on-surface-variant); transition: all var(--transition-fast);
+  font-family: var(--font-body);
+}
+.voteBtn:hover:not(:disabled) { border-color: var(--color-outline-variant); }
+.voteBtn:disabled { opacity: 0.4; cursor: default; }
+.upActive { background: rgba(0,106,97,0.12); color: var(--color-secondary); border-color: var(--color-secondary); }
+.downActive { background: rgba(239,68,68,0.08); color: var(--color-error); border-color: var(--color-error); }
+.time { font-size: 0.7rem; color: var(--color-on-surface-variant); }
+.progress { height: 4px; background: var(--color-surface-container-highest); border-radius: 999px; overflow: hidden; }
+.progressBar { height: 100%; background: var(--color-secondary); border-radius: 999px; transition: width 0.3s ease; }
+.progressLabel { font-size: 0.65rem; color: var(--color-on-surface-variant); text-align: center; }

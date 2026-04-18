@@ -118,7 +118,13 @@ export default async function HostelsPage({ searchParams }: PageProps) {
                 <h1>Hostels Near KL University</h1>
                 <p>Reviewed by verified KL students only — Spot the Fake</p>
               </div>
-              <AdminAddButton />
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <Link href="/submit-hostel" className="btn btn-secondary">
+                  <span className="material-symbols-outlined" style={{ fontSize: 18 }}>add_circle</span>
+                  Suggest Hostel
+                </Link>
+                <AdminAddButton />
+              </div>
             </div>
             <Suspense fallback={<div className="skeleton" style={{ height: 52, borderRadius: 999, width: 400, marginBottom: 16 }} />}>
               <HostelsFilter />

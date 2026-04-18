@@ -3,6 +3,7 @@ import Footer from "@/components/layout/Footer";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { formatDate } from "@/lib/utils/format";
+import AdminPendingPanel from "@/components/admin/AdminPendingPanel";
 import styles from "./page.module.css";
 
 export const metadata = { title: "Admin Dashboard" };
@@ -19,6 +20,12 @@ export default async function DashboardPage() {
   const { count: userCount } = await supabase.from("profiles").select("*", { count: "exact", head: true });
   const { count: flagCount } = await supabase.from("review_flags").select("*", { count: "exact", head: true });
 
+  const { data: pendingHostels } = await supabase
+    .from("pending_hostels")
+    .select("*")
+    .eq("status", "pending")
+    .order("created_at", { ascending: false });
+
   const { data: flaggedReviews } = await supabase.from("review_flags").select("*, review:reviews(title, content, user_id), reporter:profiles!review_flags_user_id_fkey(full_name)").order("created_at", { ascending: false }).limit(10);
   const { data: recentReviews } = await supabase.from("reviews").select("*, profile:profiles(full_name), hostel:hostels(name)").order("created_at", { ascending: false }).limit(5);
 
@@ -30,8 +37,16 @@ export default async function DashboardPage() {
         <div className={styles.stat}><span className={styles.statNum}>{reviewCount || 0}</span><span>Reviews</span></div>
         <div className={styles.stat}><span className={styles.statNum}>{userCount || 0}</span><span>Users</span></div>
         <div className={styles.stat}><span className={styles.statNum}>{flagCount || 0}</span><span>Flags</span></div>
+        <div className={styles.stat}><span className={styles.statNum}>{pendingHostels?.length || 0}</span><span>Pending</span></div>
       </div>
       <div className={styles.panels}>
+        {/* Pending Hostels */}
+        <div className={styles.panel}>
+          <h2>🏗️ Pending Hostels</h2>
+          <AdminPendingPanel hostels={pendingHostels || []} />
+        </div>
+
+        {/* Flagged Reviews */}
         <div className={styles.panel}>
           <h2>🚩 Flagged Reviews</h2>
           {flaggedReviews && flaggedReviews.length > 0 ? flaggedReviews.map((f) => (
@@ -41,6 +56,8 @@ export default async function DashboardPage() {
             </div>
           )) : <p className={styles.empty}>No flagged reviews</p>}
         </div>
+
+        {/* Recent Reviews */}
         <div className={styles.panel}>
           <h2>📝 Recent Reviews</h2>
           {recentReviews && recentReviews.length > 0 ? recentReviews.map((r) => (
