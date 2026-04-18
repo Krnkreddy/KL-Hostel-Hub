@@ -5,17 +5,57 @@ import { formatRelativeTime } from "@/lib/utils/format";
 import { createClient } from "@/lib/supabase/client";
 import styles from "./ReviewCard.module.css";
 
-export default function ReviewCard({ review, currentUserId, onDelete }: {
+interface VoteCounts {
+  helpful: number;
+  not_helpful: number;
+  userVote: "helpful" | "not_helpful" | null;
+}
+
+export default function ReviewCard({ review, currentUserId, onDelete, initialVotes }: {
   review: Review;
   currentUserId?: string;
   onDelete?: (id: string) => void;
+  initialVotes?: VoteCounts;
 }) {
   const [flagged, setFlagged] = useState(false);
+  const [votes, setVotes] = useState<VoteCounts>(initialVotes || { helpful: 0, not_helpful: 0, userVote: null });
+  const [voting, setVoting] = useState(false);
+
   const isOwner = currentUserId === review.user_id;
   const displayName = review.profile?.full_name || "Anonymous";
   const initials = displayName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
-  const overallRating = review.rating?.overall;
+  const ratingObj = review.rating || review.ratings?.[0];
+  const overallRating = ratingObj?.overall;
   const isVerified = !!review.profile?.email?.endsWith("@kluniversity.in");
+
+  const handleVote = async (type: "helpful" | "not_helpful") => {
+    if (!currentUserId || isOwner || voting) return;
+    setVoting(true);
+
+    // Optimistic update
+    setVotes((prev) => {
+      const was = prev.userVote;
+      if (was === type) {
+        // Toggle off
+        return { ...prev, [type]: prev[type] - 1, userVote: null };
+      }
+      const next = { ...prev, [type]: prev[type] + 1, userVote: type as "helpful" | "not_helpful" };
+      if (was) next[was] = prev[was] - 1;
+      return next;
+    });
+
+    try {
+      await fetch(`/api/reviews/${review.id}/vote`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ vote_type: type }),
+      });
+    } catch {
+      // Revert on failure
+      setVotes(initialVotes || { helpful: 0, not_helpful: 0, userVote: null });
+    }
+    setVoting(false);
+  };
 
   const handleFlag = async () => {
     const reason = prompt("Why are you flagging this review?");
@@ -33,7 +73,6 @@ export default function ReviewCard({ review, currentUserId, onDelete }: {
 
   return (
     <article className={styles.card}>
-      {/* Left accent border */}
       <div className={styles.accentBar} style={{ background: overallRating && overallRating >= 4 ? "var(--color-secondary)" : "var(--color-surface-container-highest)" }} />
 
       <div className={styles.inner}>
@@ -56,7 +95,6 @@ export default function ReviewCard({ review, currentUserId, onDelete }: {
             </div>
           </div>
 
-          {/* Stars */}
           {overallRating && (
             <div className={styles.stars}>
               {[1, 2, 3, 4, 5].map((s) => (
@@ -68,9 +106,6 @@ export default function ReviewCard({ review, currentUserId, onDelete }: {
             </div>
           )}
         </div>
-
-        {/* Review title */}
-        <h4 className={styles.title}>{review.title}</h4>
 
         {/* Content */}
         <p className={styles.content}>{review.content}</p>
@@ -84,14 +119,29 @@ export default function ReviewCard({ review, currentUserId, onDelete }: {
           </div>
         )}
 
+        {/* Voting UI */}
+        <div className={styles.voteRow}>
+          <button
+            className={`${styles.voteBtn} ${votes.userVote === "helpful" ? styles.voteBtnActive : ""}`}
+            onClick={() => handleVote("helpful")}
+            disabled={!currentUserId || isOwner}
+            title={!currentUserId ? "Sign in to vote" : isOwner ? "Can't vote on your own review" : "Mark as helpful"}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: 18 }}>thumb_up</span>
+            Helpful {votes.helpful > 0 && <span className={styles.voteCount}>({votes.helpful})</span>}
+          </button>
+          <button
+            className={`${styles.voteBtn} ${votes.userVote === "not_helpful" ? styles.voteBtnActiveNeg : ""}`}
+            onClick={() => handleVote("not_helpful")}
+            disabled={!currentUserId || isOwner}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: 18 }}>thumb_down</span>
+            Not Helpful {votes.not_helpful > 0 && <span className={styles.voteCount}>({votes.not_helpful})</span>}
+          </button>
+        </div>
+
         {/* Footer actions */}
         <div className={styles.footer}>
-          {currentUserId && !isOwner && (
-            <button className={styles.helpfulBtn}>
-              <span className="material-symbols-outlined" style={{ fontSize: 18 }}>thumb_up</span>
-              Helpful
-            </button>
-          )}
           <div className={styles.footerRight}>
             {isOwner && (
               <button className={styles.deleteBtn} onClick={handleDelete}>Delete</button>

@@ -87,7 +87,7 @@ export default async function ProfilePage() {
                             </h3>
                             <div className={styles.reviewItemStars}>
                               {[1,2,3,4,5].map((s) => (
-                                <span key={s} className={`material-symbols-outlined ${s <= (r.rating?.overall || 0) ? "icon-fill" : ""}`} style={{ fontSize: 16 }}>
+                                <span key={s} className={`material-symbols-outlined ${s <= (r.rating?.overall || r.ratings?.[0]?.overall || 0) ? "icon-fill" : ""}`} style={{ fontSize: 16 }}>
                                   star
                                 </span>
                               ))}

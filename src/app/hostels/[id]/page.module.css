@@ -226,22 +226,35 @@
 
 /* ── Info sidebar ── */
 .layout {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: var(--space-10);
-  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
 }
-@media (max-width: 900px) {
-  .layout { grid-template-columns: 1fr; }
-  .sidebar { order: -1; position: static; }
+
+/* Desktop: two-column grid */
+@media (min-width: 768px) {
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: var(--space-10);
+    align-items: flex-start;
+  }
 }
 
 .sidebar {
-  position: sticky;
-  top: calc(var(--header-height) + var(--space-6));
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  /* Mobile: normal flow, no sticky */
+  position: static;
+}
+
+/* Desktop: sticky sidebar */
+@media (min-width: 768px) {
+  .sidebar {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-6));
+  }
 }
 
 .sideCard {

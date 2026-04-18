@@ -41,6 +41,7 @@ export interface Review {
   updated_at: string;
   profile?: Profile;
   rating?: Rating;
+  ratings?: Rating[];
   images?: ReviewImage[];
 }
 

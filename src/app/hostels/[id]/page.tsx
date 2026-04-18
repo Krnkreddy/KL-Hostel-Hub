@@ -51,7 +51,7 @@ export default async function HostelDetailPage({ params }: { params: Promise<{ i
 
   const { data: reviews } = await supabase
     .from("reviews")
-    .select("*, profile:profiles(*), rating:ratings(*), images:review_images(*)")
+    .select("*, profile:profiles!user_id(*), ratings(*), images:review_images(*)")
     .eq("hostel_id", id)
     .order("created_at", { ascending: false })
     .limit(20);
@@ -72,7 +72,7 @@ export default async function HostelDetailPage({ params }: { params: Promise<{ i
     if (!reviews || reviews.length === 0) return [];
     const counts = [0, 0, 0, 0, 0]; // index 0 = 1-star, index 4 = 5-star
     for (const r of reviews) {
-      const o = r.rating?.overall;
+      const o = (r.rating?.overall || r.ratings?.[0]?.overall);
       if (o && o >= 1 && o <= 5) counts[o - 1]++;
     }
     const total = counts.reduce((a, b) => a + b, 0);
