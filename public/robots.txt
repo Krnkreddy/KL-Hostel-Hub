@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://klhostelhub.vercel.app/sitemap.xml
