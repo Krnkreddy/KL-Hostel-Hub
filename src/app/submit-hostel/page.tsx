@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { createClient } from "@/lib/supabase/client";
 import styles from "./page.module.css";
 
 const AMENITY_OPTIONS = ["WiFi", "Fan", "AC", "Mess", "CCTV", "Hot Water", "Gym", "Laundry", "Parking", "Power Backup"];
@@ -13,10 +14,26 @@ export default function SubmitHostelPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const [form, setForm] = useState({
     name: "", location: "", price_min: "", price_max: "",
     gender: "co-ed", description: "", distance: "", amenities: [] as string[],
   });
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) {
+        router.replace("/login?redirectTo=/submit-hostel");
+      } else {
+        setAuthChecked(true);
+      }
+    });
+  }, [router]);
+
+  if (!authChecked) {
+    return <><Header /><main className="page-wrapper"><section className={styles.page}><div className="container" style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", padding: "4rem 0" }}>Checking authentication...</div></section></main><Footer /></>;
+  }
 
   const toggle = (a: string) => setForm((p) => ({
     ...p, amenities: p.amenities.includes(a) ? p.amenities.filter((x) => x !== a) : [...p.amenities, a],

@@ -32,7 +32,7 @@ function LoginContent() {
         <div className={styles.brandHeader}>
           <div className={styles.brandRow}>
             <span className={`material-symbols-outlined icon-fill ${styles.brandIcon}`}>apartment</span>
-            <span className={styles.brandName}>FindTheHostel</span>
+            <span className={styles.brandName}>KL Hostel Hub</span>
           </div>
           <p className={styles.brandSub}>Honest hostel reviews by real KL students</p>
         </div>
@@ -40,7 +40,7 @@ function LoginContent() {
         {/* Card */}
         <div className={styles.card}>
           <div className={styles.cardHead}>
-            <h1 className={styles.title}>Welcome to FindTheHostel</h1>
+            <h1 className={styles.title}>Welcome to KL Hostel Hub</h1>
             <p className={styles.subtitle}>
               Sign in with your KL University Microsoft account to securely access trusted student housing reviews and insights.
             </p>

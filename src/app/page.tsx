@@ -5,7 +5,7 @@ import BottomNav from "@/components/layout/BottomNav";
 import styles from "./page.module.css";
 
 export const metadata = {
-  title: "FindTheHostel — Honest hostel reviews for KL University students",
+  title: "KL Hostel Hub — Honest hostel reviews for KL University students",
   description: "Find the perfect hostel near KL University. Real reviews from verified students. Free, always.",
 };
 
@@ -70,7 +70,7 @@ export default function HomePage() {
           {/* How it works */}
           <section className={styles.howSection}>
             <div className="container">
-              <h2>How FindTheHostel Works</h2>
+              <h2>How KL Hostel Hub Works</h2>
               <div className={styles.stepsGrid}>
                 {STEPS.map((step) => (
                   <div key={step.title} className={styles.step}>

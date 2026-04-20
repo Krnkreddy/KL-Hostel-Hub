@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const supabase = await createClient();
   const { data: hostel } = await supabase.from("hostels").select("name, description").eq("id", id).single();
   if (!hostel) return { title: "Hostel Not Found" };
-  return { title: hostel.name, description: hostel.description.slice(0, 160) };
+  return { title: hostel.name, description: (hostel.description || "").slice(0, 160) || `Reviews for ${hostel.name}` };
 }
 
 const CAT_ICONS: Record<string, string> = {
@@ -49,12 +49,45 @@ export default async function HostelDetailPage({ params }: { params: Promise<{ i
   const { data: ratingsData } = await supabase.rpc("get_hostel_ratings", { hostel_uuid: id });
   const ratings: AggregateRating | null = ratingsData?.[0] || null;
 
-  const { data: reviews } = await supabase
+  // Fetch reviews (plain — no risky FK hints that can silently filter results)
+  const { data: rawReviews } = await supabase
     .from("reviews")
-    .select("*, profile:profiles!user_id(*), ratings(*), images:review_images(*)")
+    .select("*")
     .eq("hostel_id", id)
     .order("created_at", { ascending: false })
     .limit(20);
+
+  // Batch-fetch related data for each review
+  const reviews = rawReviews || [];
+  const userIds = [...new Set(reviews.map((r) => r.user_id))];
+  const reviewIds = reviews.map((r) => r.id);
+
+  const [profilesRes, ratingsRes, imagesRes] = await Promise.all([
+    userIds.length > 0
+      ? supabase.from("profiles").select("*").in("id", userIds)
+      : { data: [] },
+    reviewIds.length > 0
+      ? supabase.from("ratings").select("*").in("review_id", reviewIds)
+      : { data: [] },
+    reviewIds.length > 0
+      ? supabase.from("review_images").select("*").in("review_id", reviewIds)
+      : { data: [] },
+  ]);
+
+  const profileMap = new Map((profilesRes.data || []).map((p: any) => [p.id, p]));
+  const ratingsMap = new Map((ratingsRes.data || []).map((r: any) => [r.review_id, r]));
+  const imagesMap = new Map<string, any[]>();
+  for (const img of (imagesRes.data || [])) {
+    if (!imagesMap.has(img.review_id)) imagesMap.set(img.review_id, []);
+    imagesMap.get(img.review_id)!.push(img);
+  }
+
+  const enrichedReviews = reviews.map((r) => ({
+    ...r,
+    profile: profileMap.get(r.user_id) || null,
+    rating: ratingsMap.get(r.id) || null,
+    images: imagesMap.get(r.id) || [],
+  }));
 
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -69,10 +102,10 @@ export default async function HostelDetailPage({ params }: { params: Promise<{ i
 
   // Compute real star distribution from review data
   const starDist = (() => {
-    if (!reviews || reviews.length === 0) return [];
-    const counts = [0, 0, 0, 0, 0]; // index 0 = 1-star, index 4 = 5-star
-    for (const r of reviews) {
-      const o = (r.rating?.overall || r.ratings?.[0]?.overall);
+    if (enrichedReviews.length === 0) return [];
+    const counts = [0, 0, 0, 0, 0];
+    for (const r of enrichedReviews) {
+      const o = r.rating?.overall;
       if (o && o >= 1 && o <= 5) counts[o - 1]++;
     }
     const total = counts.reduce((a, b) => a + b, 0);
@@ -167,7 +200,7 @@ export default async function HostelDetailPage({ params }: { params: Promise<{ i
                 )}
 
                 <ReviewsSection
-                  reviews={reviews || []}
+                  reviews={enrichedReviews}
                   totalReviews={totalReviews}
                   currentUserId={user?.id}
                 />
@@ -209,7 +242,7 @@ export default async function HostelDetailPage({ params }: { params: Promise<{ i
 
                 <div className={styles.sideCard}>
                   <h3>Quick Info</h3>
-                  <div className={styles.infoItem}><span>Gender</span><span>{hostel.gender === "co-ed" ? "Co-Ed" : hostel.gender}</span></div>
+                  <div className={styles.infoItem}><span>Gender</span><span>{hostel.gender === "co-ed" ? "Co-Ed" : hostel.gender.charAt(0).toUpperCase() + hostel.gender.slice(1)}</span></div>
                   <div className={styles.infoItem}><span>Distance</span><span>{formatDistance(hostel.distance_from_campus)}</span></div>
                   <div className={styles.infoItem}><span>Amenities</span><span>{hostel.amenities.length} available</span></div>
                   <div className={styles.infoItem}><span>Status</span><span>{hostel.is_verified ? "✓ Verified" : "Unverified"}</span></div>

@@ -49,7 +49,7 @@ export default function Header() {
       <div className={styles.inner}>
         {/* Brand */}
         <Link href="/" className={styles.brand}>
-          <span className={styles.brandText}>FindTheHostel</span>
+          <span className={styles.brandText}>KL Hostel Hub</span>
           <span className={styles.brandDot}></span>
         </Link>
 

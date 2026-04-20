@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: { default: "FindTheHostel", template: "%s | FindTheHostel" },
+  title: { default: "KL Hostel Hub", template: "%s | KL Hostel Hub" },
   description: "Honest hostel reviews by verified KL University students.",
 };
 

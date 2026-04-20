@@ -5,8 +5,8 @@ import styles from "./BottomNav.module.css";
 
 const NAV_ITEMS = [
   { href: "/hostels", icon: "search", label: "Explore" },
-  { href: "/profile#saved", icon: "bookmark", label: "Saved" },
-  { href: "/hostels#reviews", icon: "rate_review", label: "Reviews" },
+  { href: "/community", icon: "groups", label: "Community" },
+  { href: "/submit-hostel", icon: "add_circle", label: "Suggest" },
   { href: "/profile", icon: "person", label: "Profile" },
 ];
 
@@ -16,11 +16,9 @@ export default function BottomNav() {
     <nav className={styles.nav} aria-label="Mobile navigation">
       {NAV_ITEMS.map((item) => {
         const isActive =
-          item.label === "Explore"
+          item.href === "/hostels"
             ? pathname.startsWith("/hostels")
-            : item.label === "Profile"
-            ? pathname === "/profile"
-            : false;
+            : pathname === item.href;
         return (
           <Link key={item.href} href={item.href} className={`${styles.item} ${isActive ? styles.active : ""}`}>
             <span className={`material-symbols-outlined ${isActive ? "icon-fill" : ""} ${styles.icon}`}>

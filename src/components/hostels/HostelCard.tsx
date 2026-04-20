@@ -30,6 +30,8 @@ const MINI_CATS = [
   { key: "average_food_quality", label: "Food" },
   { key: "average_wifi_quality", label: "WiFi" },
   { key: "average_safety", label: "Safety" },
+  { key: "average_value_for_money", label: "Value" },
+  { key: "average_management", label: "Management" },
 ];
 
 export default function HostelCard({ hostel, index = 0 }: { hostel: Hostel; index?: number }) {
@@ -85,9 +87,13 @@ export default function HostelCard({ hostel, index = 0 }: { hostel: Hostel; inde
         {/* Footer */}
         <div className={styles.cardFooter}>
           <div className={styles.tagRow}>
-            {hostel.is_verified && (
+            {hostel.is_verified ? (
               <span className={styles.tag} style={{ background: "rgba(0,106,97,0.1)", color: "var(--color-secondary)" }}>
                 ✓ Verified
+              </span>
+            ) : (
+              <span className={styles.tag} style={{ background: "rgba(239,68,68,0.08)", color: "var(--color-error)" }}>
+                ⚠ Unverified
               </span>
             )}
             <span className={styles.tag}>{hostel.gender === "co-ed" ? "Co-Ed" : hostel.gender}</span>
