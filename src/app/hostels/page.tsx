@@ -11,8 +11,13 @@ import Link from "next/link";
 import styles from "./page.module.css";
 
 export const metadata = {
-  title: "Browse Hostels",
-  description: "Find and compare hostels near KL University — reviewed by verified students.",
+  title: "Browse Hostels Near KL University",
+  description: "Compare all hostels near KL University with student ratings, prices & amenities. Verified reviews for boys, girls & co-ed hostels in Vaddeswaram.",
+  openGraph: {
+    title: "Browse Hostels Near KL University — KL Hostel Hub",
+    description: "Find and compare hostels near KLU. Filter by price, gender, rating & distance.",
+    url: "https://klhostelhub.vercel.app/hostels",
+  },
 };
 
 interface PageProps {
