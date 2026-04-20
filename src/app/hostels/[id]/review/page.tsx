@@ -127,7 +127,8 @@ export default function WriteReviewPage({ params }: { params: Promise<{ id: stri
         return;
       }
 
-      // ✅ BUG-01 FIX: Upload images through /api/upload
+      // Upload images through /api/upload
+      const uploadErrors: string[] = [];
       for (const file of formData.images) {
         const body = new FormData();
         body.append("file", file);
@@ -135,8 +136,12 @@ export default function WriteReviewPage({ params }: { params: Promise<{ id: stri
         const res = await fetch("/api/upload", { method: "POST", body });
         if (!res.ok) {
           const data = await res.json().catch(() => ({}));
-          console.warn("Image upload failed:", data.error || res.statusText);
+          uploadErrors.push(data.error || res.statusText);
+          console.error("Image upload failed:", data.error || res.statusText);
         }
+      }
+      if (uploadErrors.length > 0) {
+        console.warn(`${uploadErrors.length} image(s) failed to upload:`, uploadErrors);
       }
 
       router.push(`/hostels/${hostelId}`);
