@@ -128,25 +128,40 @@ export default function WriteReviewPage({ params }: { params: Promise<{ id: stri
       }
 
       // Upload images through /api/upload
-      const uploadErrors: string[] = [];
-      for (const file of formData.images) {
-        const body = new FormData();
-        body.append("file", file);
-        body.append("review_id", review.id);
-        const res = await fetch("/api/upload", { method: "POST", body });
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          uploadErrors.push(data.error || res.statusText);
-          console.error("Image upload failed:", data.error || res.statusText);
+      if (formData.images.length > 0) {
+        console.log(`[review] Uploading ${formData.images.length} image(s) for review ${review.id}`);
+        const uploadErrors: string[] = [];
+        for (let i = 0; i < formData.images.length; i++) {
+          const file = formData.images[i];
+          console.log(`[review] Uploading image ${i + 1}: ${file.name} (${file.size} bytes, ${file.type})`);
+          const body = new FormData();
+          body.append("file", file);
+          body.append("review_id", review.id);
+          try {
+            const res = await fetch("/api/upload", { method: "POST", body });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+              const errMsg = data.error || `HTTP ${res.status}`;
+              uploadErrors.push(errMsg);
+              console.error(`[review] Image ${i + 1} upload failed:`, errMsg);
+            } else {
+              console.log(`[review] Image ${i + 1} uploaded successfully:`, data.data?.image_url);
+            }
+          } catch (fetchErr) {
+            const errMsg = fetchErr instanceof Error ? fetchErr.message : "Network error";
+            uploadErrors.push(errMsg);
+            console.error(`[review] Image ${i + 1} fetch error:`, fetchErr);
+          }
         }
-      }
-      if (uploadErrors.length > 0) {
-        console.warn(`${uploadErrors.length} image(s) failed to upload:`, uploadErrors);
+        if (uploadErrors.length > 0) {
+          alert(`⚠️ ${uploadErrors.length} image(s) failed to upload:\n${uploadErrors.join("\n")}`);
+        }
       }
 
       router.push(`/hostels/${hostelId}`);
       router.refresh();
-    } catch {
+    } catch (err) {
+      console.error("[review] Submit error:", err);
       setError("Something went wrong.");
       setLoading(false);
     }
