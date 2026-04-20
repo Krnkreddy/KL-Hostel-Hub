@@ -7,7 +7,12 @@ import Footer from "@/components/layout/Footer";
 import { createClient } from "@/lib/supabase/client";
 import styles from "./page.module.css";
 
-const AMENITY_OPTIONS = ["WiFi", "Fan", "AC", "Mess", "CCTV", "Hot Water", "Gym", "Laundry", "Parking", "Power Backup"];
+const AMENITY_OPTIONS = [
+  "Mess", "WiFi", "AC", "Hot Water", "Power Backup", "CCTV",
+  "Security Guard", "Laundry", "Washing Machine", "Gym", "Parking",
+  "RO Drinking Water", "Cleaning Service", "Study Room",
+  "Fee Delay Tolerance", "Maintenance Support", "Visitor Allowed", "Elevator",
+];
 
 export default function SubmitHostelPage() {
   const router = useRouter();
@@ -17,7 +22,9 @@ export default function SubmitHostelPage() {
   const [authChecked, setAuthChecked] = useState(false);
   const [form, setForm] = useState({
     name: "", location: "", price_min: "", price_max: "",
-    gender: "co-ed", description: "", distance: "", amenities: [] as string[],
+    gender: "co-ed", description: "", distance: "",
+    price_type: "monthly" as "monthly" | "yearly",
+    amenities: [] as string[],
   });
 
   useEffect(() => {
@@ -53,6 +60,7 @@ export default function SubmitHostelPage() {
         ...form,
         price_min: Number(form.price_min) || 0,
         price_max: Number(form.price_max) || 0,
+        price_type: form.price_type,
       }),
     });
     const data = await res.json().catch(() => ({}));
@@ -119,17 +127,30 @@ export default function SubmitHostelPage() {
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
           <div className="form-group">
-            <label className="form-label">Min Price (₹/mo)</label>
+            <label className="form-label">Min Price (₹)</label>
             <input className="form-input" type="number" value={form.price_min} onChange={(e) => set("price_min", e.target.value)} />
           </div>
           <div className="form-group">
-            <label className="form-label">Max Price (₹/mo)</label>
+            <label className="form-label">Max Price (₹)</label>
             <input className="form-input" type="number" value={form.price_max} onChange={(e) => set("price_max", e.target.value)} />
           </div>
         </div>
         <div className="form-group">
+          <label className="form-label">Pricing Period</label>
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <label className={styles.radioLabel}>
+              <input type="radio" name="price_type" value="monthly" checked={form.price_type === "monthly"} onChange={() => setForm((p) => ({ ...p, price_type: "monthly" }))} />
+              Per Month
+            </label>
+            <label className={styles.radioLabel}>
+              <input type="radio" name="price_type" value="yearly" checked={form.price_type === "yearly"} onChange={() => setForm((p) => ({ ...p, price_type: "yearly" }))} />
+              Per Academic Year (10 months)
+            </label>
+          </div>
+        </div>
+        <div className="form-group">
           <label className="form-label">Amenities</label>
-          <div className={styles.amenityChips}>
+          <div className={styles.amenityGrid}>
             {AMENITY_OPTIONS.map((a) => (
               <button key={a} type="button" onClick={() => toggle(a)}
                 className={`${styles.chip} ${form.amenities.includes(a) ? styles.chipActive : ""}`}>{a}</button>

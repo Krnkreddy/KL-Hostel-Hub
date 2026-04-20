@@ -5,7 +5,12 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
-const AMENITY_OPTIONS = ["WiFi", "Fan", "AC", "Mess", "CCTV", "Hot Water", "Gym", "Laundry", "Parking", "Power Backup"];
+const AMENITY_OPTIONS = [
+  "Mess", "WiFi", "AC", "Hot Water", "Power Backup", "CCTV",
+  "Security Guard", "Laundry", "Washing Machine", "Gym", "Parking",
+  "RO Drinking Water", "Cleaning Service", "Study Room",
+  "Fee Delay Tolerance", "Maintenance Support", "Visitor Allowed", "Elevator",
+];
 
 export default function AddHostelPage() {
   const router = useRouter();

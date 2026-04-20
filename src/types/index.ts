@@ -24,6 +24,7 @@ export interface Hostel {
   contact_phone: string | null;
   contact_email: string | null;
   is_verified: boolean;
+  price_type?: "monthly" | "yearly";
   created_at: string;
   updated_at: string;
   average_rating?: number | null;

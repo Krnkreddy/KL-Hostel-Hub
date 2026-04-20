@@ -18,7 +18,11 @@ export default function PendingHostelCard({ hostel, isLoggedIn, isOwner }: {
   const [voting, setVoting] = useState(false);
 
   const vote = async (type: "upvote" | "downvote") => {
-    if (!isLoggedIn || isOwner || voting) return;
+    if (!isLoggedIn) {
+      window.location.href = "/login?redirectTo=/community";
+      return;
+    }
+    if (isOwner || voting) return;
     setVoting(true);
 
     // Optimistic

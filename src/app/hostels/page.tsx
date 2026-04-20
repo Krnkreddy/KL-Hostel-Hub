@@ -55,24 +55,36 @@ async function HostelsList({ searchParams }: { searchParams: Awaited<PageProps["
     </div>
   );
 
-  // Batch ratings
+  // Batch ratings — fetch all categories
   const hostelIds = hostels.map((h) => h.id);
   const { data: allRatings } = await supabase
-    .from("ratings").select("overall, reviews!inner(hostel_id)").in("reviews.hostel_id", hostelIds);
+    .from("ratings").select("overall, cleanliness, food_quality, wifi_quality, safety, value_for_money, management, reviews!inner(hostel_id)").in("reviews.hostel_id", hostelIds);
 
-  const ratingMap = new Map<string, { sum: number; count: number }>();
+  const ratingMap = new Map<string, { sum: number; count: number; cats: Record<string, number> }>();
+  const catFields = ["cleanliness", "food_quality", "wifi_quality", "safety", "value_for_money", "management"] as const;
   if (allRatings) {
     for (const r of allRatings as any[]) {
       const hid = r.reviews?.hostel_id;
       if (!hid) continue;
-      const e = ratingMap.get(hid) || { sum: 0, count: 0 };
-      e.sum += r.overall; e.count += 1; ratingMap.set(hid, e);
+      const e = ratingMap.get(hid) || { sum: 0, count: 0, cats: {} };
+      e.sum += r.overall; e.count += 1;
+      for (const c of catFields) {
+        e.cats[c] = (e.cats[c] || 0) + (r[c] || 0);
+      }
+      ratingMap.set(hid, e);
     }
   }
 
   const hostelsWithRatings: Hostel[] = hostels.map((h) => {
     const rd = ratingMap.get(h.id);
-    return { ...h, average_rating: rd ? Math.round((rd.sum / rd.count) * 10) / 10 : null, review_count: rd?.count || 0 };
+    const avg = rd ? Math.round((rd.sum / rd.count) * 10) / 10 : null;
+    const catAvgs: Record<string, number> = {};
+    if (rd) {
+      for (const c of catFields) {
+        catAvgs[`average_${c}`] = Math.round(((rd.cats[c] || 0) / rd.count) * 10) / 10;
+      }
+    }
+    return { ...h, average_rating: avg, review_count: rd?.count || 0, ...catAvgs } as Hostel;
   });
 
   if (searchParams.sort === "rating")
@@ -125,6 +137,12 @@ export default async function HostelsPage({ searchParams }: PageProps) {
                 </Link>
                 <AdminAddButton />
               </div>
+            </div>
+            <div className={styles.communityBanner}>
+              <span>Don&apos;t see your hostel?</span>
+              <Link href="/submit-hostel">Suggest it →</Link>
+              <span>or</span>
+              <Link href="/community">Vote on pending hostels →</Link>
             </div>
             <Suspense fallback={<div className="skeleton" style={{ height: 52, borderRadius: 999, width: 400, marginBottom: 16 }} />}>
               <HostelsFilter />

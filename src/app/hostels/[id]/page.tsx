@@ -231,13 +231,20 @@ export default async function HostelDetailPage({ params }: { params: Promise<{ i
               {/* Sidebar */}
               <aside className={styles.sidebar}>
                 <div className={styles.sideCard}>
-                  <h3>Monthly Rent</h3>
+                  <h3>{hostel.price_type === "yearly" ? "Annual Fee" : "Monthly Rent"}</h3>
                   <div className={styles.priceRange}>
                     <span>{formatPrice(hostel.price_min)}</span>
                     <span className={styles.priceSep}>—</span>
                     <span>{formatPrice(hostel.price_max)}</span>
                   </div>
-                  <p className={styles.priceNote}>per month</p>
+                  <p className={styles.priceNote}>
+                    {hostel.price_type === "yearly" ? "per academic year" : "per month"}
+                  </p>
+                  {hostel.price_type === "yearly" && hostel.price_min > 0 && (
+                    <p className={styles.priceNote} style={{ color: "var(--color-secondary)" }}>
+                      ≈ {formatPrice(Math.round(hostel.price_min / 10))} – {formatPrice(Math.round(hostel.price_max / 10))}/mo
+                    </p>
+                  )}
                 </div>
 
                 <div className={styles.sideCard}>

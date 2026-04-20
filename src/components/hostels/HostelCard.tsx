@@ -75,12 +75,17 @@ export default function HostelCard({ hostel, index = 0 }: { hostel: Hostel; inde
         {/* Mini progress bars — only show when reviews exist */}
         {hostel.average_rating != null && hostel.review_count && hostel.review_count > 0 && (
           <div className={styles.progressBars}>
-            {MINI_CATS.map((cat) => (
-              <div key={cat.key} className={styles.progressRow}>
-                <span className={styles.progressLabel}>{cat.label}</span>
-                <ProgressBar value={hostel.average_rating!} color={ratingColor} />
-              </div>
-            ))}
+            {MINI_CATS.map((cat) => {
+              const val = (hostel as any)[cat.key] || 0;
+              const color = val >= 4.0 ? "var(--color-secondary)" : val >= 3.0 ? "var(--color-tertiary-fixed-dim)" : "var(--color-error)";
+              return (
+                <div key={cat.key} className={styles.progressRow}>
+                  <span className={styles.progressLabel}>{cat.label}</span>
+                  <ProgressBar value={val} color={color} />
+                  <span className={styles.progressScore}>{val > 0 ? val.toFixed(1) : "—"}</span>
+                </div>
+              );
+            })}
           </div>
         )}
 
@@ -96,11 +101,17 @@ export default function HostelCard({ hostel, index = 0 }: { hostel: Hostel; inde
                 ⚠ Unverified
               </span>
             )}
-            <span className={styles.tag}>{hostel.gender === "co-ed" ? "Co-Ed" : hostel.gender}</span>
+            <span className={styles.tag}>{hostel.gender === "co-ed" ? "Co-Ed" : hostel.gender.charAt(0).toUpperCase() + hostel.gender.slice(1)}</span>
           </div>
-          <span className={styles.price}>
-            {formatPrice(hostel.price_min)}<span className={styles.priceSuffix}>/mo</span>
-          </span>
+          <div style={{ textAlign: "right" }}>
+            <span className={styles.price}>
+              {formatPrice(hostel.price_min)}
+              <span className={styles.priceSuffix}>{hostel.price_type === "yearly" ? "/yr" : "/mo"}</span>
+            </span>
+            {hostel.price_type === "yearly" && hostel.price_min > 0 && (
+              <span className={styles.priceEquiv}>≈ {formatPrice(Math.round(hostel.price_min / 10))}/mo</span>
+            )}
+          </div>
         </div>
       </div>
     </Link>

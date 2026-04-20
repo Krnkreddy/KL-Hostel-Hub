@@ -20,6 +20,7 @@ export default function ReviewCard({ review, currentUserId, onDelete, initialVot
   const [flagged, setFlagged] = useState(false);
   const [votes, setVotes] = useState<VoteCounts>(initialVotes || { helpful: 0, not_helpful: 0, userVote: null });
   const [voting, setVoting] = useState(false);
+  const [lightboxImg, setLightboxImg] = useState<string | null>(null);
 
   const isOwner = currentUserId === review.user_id;
   const displayName = review.profile?.full_name || "Anonymous";
@@ -114,8 +115,20 @@ export default function ReviewCard({ review, currentUserId, onDelete, initialVot
         {review.images && review.images.length > 0 && (
           <div className={styles.images}>
             {review.images.map((img) => (
-              <img key={img.id} src={img.image_url} alt="Review" className={styles.reviewImage} loading="lazy" />
+              <img
+                key={img.id}
+                src={img.image_url}
+                alt="Review photo"
+                className={styles.reviewImage}
+                loading="lazy"
+                onClick={() => setLightboxImg(img.image_url)}
+              />
             ))}
+          </div>
+        )}
+        {lightboxImg && (
+          <div className={styles.lightbox} onClick={() => setLightboxImg(null)}>
+            <img src={lightboxImg} alt="Full size review photo" />
           </div>
         )}
 

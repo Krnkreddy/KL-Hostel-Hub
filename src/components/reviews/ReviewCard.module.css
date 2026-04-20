@@ -72,8 +72,24 @@
 }
 
 /* Images */
-.images { display: flex; gap: var(--space-2); overflow-x: auto; }
-.reviewImage { height: 80px; border-radius: var(--radius-md); object-fit: cover; }
+.images { display: flex; gap: var(--space-2); overflow-x: auto; padding: var(--space-1) 0; }
+.reviewImage {
+  height: 120px; width: 120px; border-radius: var(--radius-lg);
+  object-fit: cover; cursor: pointer; flex-shrink: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 2px solid var(--color-outline-variant);
+}
+.reviewImage:hover { transform: scale(1.05); box-shadow: var(--shadow-md); }
+.lightbox {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.85); display: flex;
+  align-items: center; justify-content: center;
+  padding: var(--space-6); cursor: pointer;
+}
+.lightbox img {
+  max-width: 90vw; max-height: 90vh; border-radius: var(--radius-xl);
+  object-fit: contain;
+}
 
 /* Footer */
 .footer {
