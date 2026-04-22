@@ -106,11 +106,8 @@ export default function HostelCard({ hostel, index = 0 }: { hostel: Hostel; inde
           <div style={{ textAlign: "right" }}>
             <span className={styles.price}>
               {formatPrice(hostel.price_min)}
-              <span className={styles.priceSuffix}>{hostel.price_type === "yearly" ? "/yr" : "/mo"}</span>
+              <span className={styles.priceSuffix}>/yr</span>
             </span>
-            {hostel.price_type === "yearly" && hostel.price_min > 0 && (
-              <span className={styles.priceEquiv}>≈ {formatPrice(Math.round(hostel.price_min / 10))}/mo</span>
-            )}
           </div>
         </div>
       </div>
