@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 export default function EditNameButton({ userId, currentName, className }: {
@@ -15,15 +14,26 @@ export default function EditNameButton({ userId, currentName, className }: {
     const trimmed = name.trim();
     if (!trimmed || trimmed === currentName) { setEditing(false); return; }
     setSaving(true);
-    const supabase = createClient();
-    const { error } = await supabase.from("profiles").update({ full_name: trimmed }).eq("id", userId);
-    setSaving(false);
-    if (!error) {
-      setEditing(false);
-      router.refresh();
-    } else {
-      alert("Failed to update name.");
+
+    try {
+      const res = await fetch("/api/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ full_name: trimmed }),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        setEditing(false);
+        router.refresh();
+      } else {
+        alert(data.error || "Failed to update name.");
+      }
+    } catch {
+      alert("Network error. Please try again.");
     }
+
+    setSaving(false);
   };
 
   if (!editing) {
