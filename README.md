@@ -174,5 +174,3 @@ KL Hostel Hub aims to become a **trusted, student-driven ecosystem** where:
 ## 📜 License
 
 MIT
-
-```
