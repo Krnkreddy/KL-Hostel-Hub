@@ -1,11 +1,10 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 export default function EditNameButton({ userId, currentName, className }: {
   userId: string; currentName: string; className?: string;
 }) {
-  const router = useRouter();
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(currentName);
   const [saving, setSaving] = useState(false);
@@ -15,25 +14,18 @@ export default function EditNameButton({ userId, currentName, className }: {
     if (!trimmed || trimmed === currentName) { setEditing(false); return; }
     setSaving(true);
 
-    try {
-      const res = await fetch("/api/profile", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ full_name: trimmed }),
-      });
-      const data = await res.json().catch(() => ({}));
-
-      if (res.ok) {
-        setEditing(false);
-        router.refresh();
-      } else {
-        alert(data.error || "Failed to update name.");
-      }
-    } catch {
-      alert("Network error. Please try again.");
-    }
-
+    const supabase = createClient();
+    const { error } = await supabase.from("profiles").update({ full_name: trimmed }).eq("id", userId);
     setSaving(false);
+
+    if (!error) {
+      setEditing(false);
+      // Full page reload preserves auth cookies properly (unlike router.refresh)
+      window.location.reload();
+    } else {
+      console.error("[profile] Update error:", error);
+      alert("Failed to update name: " + error.message);
+    }
   };
 
   if (!editing) {
