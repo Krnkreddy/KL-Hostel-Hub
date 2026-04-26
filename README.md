@@ -2,111 +2,177 @@
 
 **Trusted hostel reviews by verified KL University students.**
 
-A production-ready, student-only hostel review platform built for KL University Vijayawada. Only verified `@kluniversity.in` students can sign in, browse hostels, and submit reviews.
+🔗 Live: https://klhostelhub.vercel.app/
 
-## Tech Stack
+KL Hostel Hub is a production-ready platform where **KL University Vijayawada students** can discover, review, and evaluate hostels with real, community-driven insights.
 
-- **Framework:** Next.js 16 (App Router, Turbopack)
-- **Database:** Supabase (PostgreSQL + Auth + Storage)
-- **Auth:** Microsoft Azure AD OAuth (single-tenant, @kluniversity.in only)
-- **Styling:** CSS Modules with glassmorphism dark theme
+---
+
+## 🚀 Features
+
+- 🔒 Microsoft OAuth (Azure AD) — **@kluniversity.in only access**
+- 🏠 Browse hostels with **search, filters, and sorting**
+- ⭐ **7-category rating system** (cleanliness, food, WiFi, safety, value, management)
+- 📷 Image uploads with **secure validation (magic byte check)**
+- 🚩 Review flagging & moderation system
+- 👍 Review voting (helpful / not helpful)
+- 🧑‍💼 Admin dashboard with moderation tools
+- 🏗️ User-submitted hostels with approval workflow *(in progress / optional)*
+- 🛡️ Full **Row Level Security (RLS)** on all tables
+- ⚡ Optimized queries, SSR, and scalable architecture
+
+---
+
+## 🧱 Tech Stack
+
+- **Frontend:** Next.js 16 (App Router, SSR, Turbopack)
+- **Backend:** Supabase (PostgreSQL + Auth + Storage)
+- **Authentication:** Microsoft Azure AD OAuth
+- **Styling:** CSS Modules (Glassmorphism Dark UI)
 - **Deployment:** Vercel
 
-## Features
+---
 
-- 🔒 Microsoft OAuth with @kluniversity.in domain restriction
-- 🏠 Hostel browsing with search, filter, and sort
-- ⭐ 7-category star ratings (cleanliness, food, WiFi, safety, value, management)
-- 📷 Review image upload with magic-byte validation
-- 🚩 Review flagging system for moderation
-- 👨‍💼 Admin dashboard with stats and flagged reviews
-- 🛡️ Row Level Security on all tables
-- 🔍 Input sanitization against PostgREST injection
+## 🔐 Security Highlights
 
-## Getting Started
+- Triple-layered domain restriction:
+  - Azure AD tenant
+  - Database trigger validation
+  - App-level verification
+- RLS enforced on all tables
+- Input sanitization (PostgREST injection protection)
+- Secure file uploads (MIME + magic byte validation)
+- Open redirect protection
+- Strict validation on ratings and payloads
 
-### Prerequisites
+---
+
+## ⚙️ Getting Started
+
+### 📌 Prerequisites
 - Node.js 18+
 - Supabase project
 - Azure AD app registration
 
-### Local Development
+---
+
+### 💻 Local Development
 
 ```bash
 # Install dependencies
 npm install
 
-# Copy environment template
+# Setup environment variables
 cp .env.local.example .env.local
-# Fill in your Supabase URL, keys, and app URL
 
-# Run the dev server
+# Run development server
 npm run dev
+````
+
+---
+
+### 🗄️ Database Setup
+
+1. Open Supabase → SQL Editor
+2. Run:
+
+```bash
+supabase/schema.sql
 ```
 
-### Database Setup
+3. Seed data:
 
-1. Go to your Supabase project → SQL Editor
-2. Run `supabase/schema.sql` to create tables, RLS policies, and functions
-3. Run `supabase/seed.sql` to insert sample hostels
-4. Create Storage buckets: `review-images` (public) and `hostel-images` (public)
+```bash
+supabase/seed.sql
+```
 
-### Azure AD Setup
+4. Create storage buckets:
 
-1. Go to [Azure Portal](https://portal.azure.com) → Microsoft Entra ID → App Registrations
-2. Register a new app (Single tenant)
-3. Add redirect URI: `https://<YOUR_SUPABASE_PROJECT>.supabase.co/auth/v1/callback`
-4. Create a client secret
-5. Configure in Supabase Dashboard → Auth → Providers → Azure
+* `review-images` (public)
+* `hostel-images` (public)
 
-## Deploy to Vercel
+---
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Krnkreddy/KL-Hostel-Hub)
+### 🔑 Azure AD Setup
 
-### Environment Variables (set in Vercel dashboard)
+1. Go to Azure Portal → Microsoft Entra ID
+2. Create App Registration
+3. Set redirect URI:
 
-| Variable | Description |
-|----------|-------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon/public key |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key (server-only) |
-| `NEXT_PUBLIC_APP_URL` | Your production URL (e.g. `https://kl-hostel-hub.vercel.app`) |
+```
+https://<YOUR_SUPABASE_PROJECT>.supabase.co/auth/v1/callback
+```
 
-### Post-Deployment Checklist
+4. Generate client secret
+5. Configure in Supabase → Auth → Providers → Azure
 
-- [ ] Add production URL to Azure AD redirect URIs
-- [ ] Update Supabase Auth → URL Configuration → Site URL
-- [ ] Set at least one user's `role` to `admin` in profiles table
-- [ ] Test full flow: Login → Browse → Write Review → Upload Images → Flag
+---
 
-## Project Structure
+## 🌐 Deployment (Vercel)
+
+Deploy easily using:
+
+👉 [https://vercel.com/new/clone?repository-url=https://github.com/Krnkreddy/KL-Hostel-Hub](https://vercel.com/new/clone?repository-url=https://github.com/Krnkreddy/KL-Hostel-Hub)
+
+---
+
+### 🔧 Environment Variables
+
+| Variable                        | Description            |
+| ------------------------------- | ---------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Supabase project URL   |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public API key         |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Server-only secret key |
+| `NEXT_PUBLIC_APP_URL`           | Production URL         |
+
+---
+
+### ✅ Post-Deployment Checklist
+
+* [ ] Add Vercel URL to Azure redirect URIs
+* [ ] Update Supabase Auth → Site URL
+* [ ] Set admin user in `profiles` table
+* [ ] Test full flow:
+
+  * Login
+  * Browse hostels
+  * Submit review
+  * Upload images
+  * Vote / flag
+
+---
+
+## 📂 Project Structure
 
 ```
 src/
 ├── app/
-│   ├── api/          # REST API routes (hostels, reviews, upload, flag)
-│   ├── auth/         # OAuth callback & signout
-│   ├── dashboard/    # Admin dashboard
-│   ├── hostels/      # Listing, detail, review submission
-│   ├── login/        # Microsoft OAuth login
+│   ├── api/          # REST API routes
+│   ├── auth/         # OAuth callback & logout
+│   ├── dashboard/    # Admin panel
+│   ├── hostels/      # Listing, details, reviews
+│   ├── login/        # Auth UI
 │   └── profile/      # User profile
-├── components/       # Header, Footer, HostelCard, ReviewCard, StarRating
-├── hooks/            # useAuth
-├── lib/              # Supabase clients, auth, validation, formatting
-└── types/            # TypeScript definitions
+├── components/       # UI components
+├── hooks/            # Custom hooks
+├── lib/              # Supabase + utils
+└── types/            # TypeScript types
 ```
 
-## Security
+---
 
-- Triple-layered domain restriction (Azure AD tenant + DB trigger + app-level check)
-- Row Level Security on all 6 tables
-- PostgREST filter injection prevention
-- Open redirect protection on auth callback
-- Magic byte file validation (prevents SVG/XSS uploads)
-- Rating value bounds checking (1-5 integers)
-- Hostel payload whitelist sanitization
-- Pagination limit clamping
+## 🎯 Vision
 
-## License
+KL Hostel Hub aims to become a **trusted, student-driven ecosystem** where:
+
+* Students help students choose better hostels
+* Data is verified through community feedback
+* Decisions are based on real experiences
+
+---
+
+## 📜 License
 
 MIT
+
+```
