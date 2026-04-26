@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
     const { error: insertErr } = await svc.from("hostels").insert({
       name: pending.name,
       slug: pending.name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
+      description: pending.description || null,
       address: pending.location || "",
       gender: pending.gender || "co-ed",
       price_min: pending.price_min || 0,

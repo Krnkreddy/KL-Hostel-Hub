@@ -1,12 +1,10 @@
 "use client";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
 
 export default function EditNameButton({ userId, currentName, className }: {
   userId: string; currentName: string; className?: string;
 }) {
-  const router = useRouter();
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(currentName);
   const [saving, setSaving] = useState(false);
@@ -15,14 +13,18 @@ export default function EditNameButton({ userId, currentName, className }: {
     const trimmed = name.trim();
     if (!trimmed || trimmed === currentName) { setEditing(false); return; }
     setSaving(true);
+
     const supabase = createClient();
     const { error } = await supabase.from("profiles").update({ full_name: trimmed }).eq("id", userId);
     setSaving(false);
+
     if (!error) {
       setEditing(false);
-      router.refresh();
+      // Full page reload preserves auth cookies properly (unlike router.refresh)
+      window.location.reload();
     } else {
-      alert("Failed to update name.");
+      console.error("[profile] Update error:", error);
+      alert("Failed to update name: " + error.message);
     }
   };
 

@@ -71,7 +71,7 @@ export default function PendingHostelCard({ hostel, isLoggedIn, isOwner }: {
       <div className={styles.meta}>
         {hostel.gender && <span className={styles.tag}>{hostel.gender}</span>}
         {hostel.distance && <span className={styles.tag}>📏 {hostel.distance}</span>}
-        {hostel.price_min > 0 && <span className={styles.tag}>₹{hostel.price_min.toLocaleString()}/mo</span>}
+        {hostel.price_min > 0 && <span className={styles.tag}>₹{hostel.price_min.toLocaleString()}/yr</span>}
       </div>
       {hostel.amenities.length > 0 && (
         <div className={styles.amenities}>

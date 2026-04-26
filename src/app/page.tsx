@@ -5,8 +5,13 @@ import BottomNav from "@/components/layout/BottomNav";
 import styles from "./page.module.css";
 
 export const metadata = {
-  title: "KL Hostel Hub — Honest hostel reviews for KL University students",
-  description: "Find the perfect hostel near KL University. Real reviews from verified students. Free, always.",
+  title: "KL Hostel Hub — Honest Hostel Reviews for KL University Students",
+  description: "Find the best hostels near KL University, Vaddeswaram. Real reviews, ratings & photos from verified KLU students. Compare prices, food, safety & amenities.",
+  openGraph: {
+    title: "KL Hostel Hub — Find Your Perfect Hostel Near KLU",
+    description: "Verified student reviews for hostels near KL University. Compare prices, food quality, cleanliness & safety ratings.",
+    url: "https://klhostelhub.vercel.app",
+  },
 };
 
 const STEPS = [
